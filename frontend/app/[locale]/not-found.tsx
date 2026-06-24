@@ -1,8 +1,15 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import LocaleLink from "@/components/i18n/LocaleLink";
+import { DEFAULT_LOCALE } from "@/lib/env";
+import { routing, type Locale } from "@/i18n/routing";
 
 export default async function LocaleNotFound() {
-  const t = await getTranslations("notFound");
+  const locale = routing.locales.includes(DEFAULT_LOCALE as Locale)
+    ? (DEFAULT_LOCALE as Locale)
+    : routing.defaultLocale;
+
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "notFound" });
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-20">

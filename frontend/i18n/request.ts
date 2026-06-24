@@ -1,6 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
-import { hasLocale } from "next-intl";
+import { hasLocale, IntlErrorCode } from "next-intl";
 import { routing, type Locale } from "./routing";
+import { APP_TIME_ZONE } from "@/lib/env";
 import frMessages from "../messages/fr.json";
 import arMessages from "../messages/ar.json";
 
@@ -18,11 +19,23 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: messages[locale],
+    timeZone: APP_TIME_ZONE,
+    now: new Date(),
     onError(error) {
-      if (error.code === "ENVIRONMENT_FALLBACK") {
+      if (
+        error.code === IntlErrorCode.MISSING_MESSAGE ||
+        error.code === IntlErrorCode.ENVIRONMENT_FALLBACK
+      ) {
         return;
       }
       console.error(error);
+    },
+    getMessageFallback({ namespace, key, error }) {
+      const path = [namespace, key].filter(Boolean).join(".");
+      if (error.code === IntlErrorCode.MISSING_MESSAGE) {
+        return path;
+      }
+      return path;
     },
   };
 });

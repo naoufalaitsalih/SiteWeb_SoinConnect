@@ -10,6 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "admin.metadata" });
 
   return {

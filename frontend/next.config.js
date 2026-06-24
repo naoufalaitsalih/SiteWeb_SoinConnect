@@ -4,7 +4,10 @@ const createNextIntlPlugin = require("next-intl/plugin");
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const publicApiOrigin = (
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://soinsconnect-api.onrender.com"
+    : "http://localhost:4000")
 ).replace(/\/+$/, "");
 
 /** @type {import('next').NextConfig} */

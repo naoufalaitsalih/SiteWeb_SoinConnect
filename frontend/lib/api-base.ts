@@ -23,4 +23,4 @@ export function serverApiUrl(path: string): string {
   return `${getServerApiBaseUrl()}${normalizedPath}`;
 }
 
-export { API_URL, SERVER_API_URL } from "./env";
+export { API_URL, SERVER_API_URL, DEFAULT_LOCALE } from "./env";
