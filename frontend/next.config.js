@@ -61,6 +61,10 @@ const nextConfig = {
   ],
   // Désactive le cache webpack (dev + build) : évite chunks manquants sur Windows
   webpack: (config, { dev }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.join(__dirname),
+    };
     config.cache = false;
     if (dev) {
       config.watchOptions = {
