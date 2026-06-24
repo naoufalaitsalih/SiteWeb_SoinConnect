@@ -1,0 +1,146 @@
+### Variables — VS Code REST Client
+@baseUrl = https://soinsconnect-api.onrender.com
+# Local : @baseUrl = http://localhost:4000
+@adminEmail = admin@soinsconnect.ma
+@adminPassword = Admin@2026
+@token = {{login.response.body.token}}
+@demandeId = 1
+
+###############################################
+# Santé & routes publiques
+###############################################
+
+### GET Health (test DB)
+GET {{baseUrl}}/api/health
+
+### GET /api/requests — volontairement absent (sécurité)
+GET {{baseUrl}}/api/requests
+
+### POST Créer une demande de soin
+POST {{baseUrl}}/api/requests
+Content-Type: application/json
+
+{
+  "fullName": "Test REST Client",
+  "phone": "+212612345678",
+  "email": "test@soinsconnect.ma",
+  "address": "10 Rue Test, Casablanca",
+  "careType": "Soins infirmiers",
+  "description": "Test via test-api.http",
+  "requestedDate": "2026-07-15",
+  "requestedTime": "09:30",
+  "isUrgent": false
+}
+
+### POST Analytics — événement public
+POST {{baseUrl}}/api/logs
+Content-Type: application/json
+
+{
+  "eventType": "page_view",
+  "pageUrl": "/fr",
+  "sessionId": "rest-client-test"
+}
+
+###############################################
+# Auth admin
+###############################################
+
+### POST Login admin
+# @name login
+POST {{baseUrl}}/api/admin/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+### POST Logout admin
+POST {{baseUrl}}/api/admin/auth/logout
+Authorization: Bearer {{token}}
+
+###############################################
+# Demandes admin (JWT requis)
+###############################################
+
+### GET Lister les demandes (admin)
+GET {{baseUrl}}/api/admin/demandes
+Authorization: Bearer {{token}}
+
+### PATCH Changer le statut d'une demande
+PATCH {{baseUrl}}/api/admin/demandes/{{demandeId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "ACCEPTEE"
+}
+
+### PATCH Notes admin sur une demande
+PATCH {{baseUrl}}/api/admin/demandes/{{demandeId}}/notes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "admin_notes": "Note test REST Client"
+}
+
+### DELETE Supprimer une demande
+DELETE {{baseUrl}}/api/admin/demandes/{{demandeId}}
+Authorization: Bearer {{token}}
+
+###############################################
+# Legacy notes (alias admin/requests)
+###############################################
+
+### GET Notes (legacy route)
+GET {{baseUrl}}/api/admin/requests/{{demandeId}}/notes
+Authorization: Bearer {{token}}
+
+### PATCH Notes (legacy route)
+PATCH {{baseUrl}}/api/admin/requests/{{demandeId}}/notes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "admin_notes": "Note legacy"
+}
+
+###############################################
+# Logs admin
+###############################################
+
+### GET Logs analytics (admin)
+GET {{baseUrl}}/api/admin/logs?page=1&limit=20
+Authorization: Bearer {{token}}
+
+### DELETE Logs par IDs
+DELETE {{baseUrl}}/api/admin/logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "ids": [1]
+}
+
+### DELETE Purge logs (plage de dates optionnelle)
+DELETE {{baseUrl}}/api/admin/logs/clear
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01",
+  "endDate": "2026-12-31"
+}
+
+###############################################
+# Audit admin
+###############################################
+
+### GET Audit logs
+GET {{baseUrl}}/api/admin/audit?page=1&limit=20
+Authorization: Bearer {{token}}
+
+### Route inexistante (404 attendu)
+GET {{baseUrl}}/api/unknown

@@ -9,7 +9,7 @@ import logsRouter from "./routes/logs";
 import adminLogsRouter from "./routes/adminLogs";
 import adminAuditRouter from "./routes/adminAudit";
 import { globalApiLimiter } from "./middleware/rateLimiters";
-
+import { prisma } from "./prisma/client";
 const app = express();
 
 app.set("trust proxy", 1);
@@ -38,10 +38,23 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 app.use("/api", globalApiLimiter);
 
-app.get("/api/health", (_req: Request, res: Response) => {
-  res.json({ success: true, message: "SoinsConnect API is running" });
+app.get("/api/health", async (_req: Request, res: Response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({
+      success: true,
+      message: "SoinsConnect API is running",
+      database: "connected",
+    });
+  } catch (error) {
+    console.error("[health] Database check failed:", error);
+    res.status(503).json({
+      success: false,
+      message: "API en ligne mais base de données inaccessible",
+      database: "disconnected",
+    });
+  }
 });
-
 app.use("/api/requests", requestsRouter);
 app.use("/api/admin/auth", adminAuthRouter);
 app.use("/api/admin/demandes", adminDemandesRouter);

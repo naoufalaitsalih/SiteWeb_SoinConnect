@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
-
-const API_URL =
-  process.env.API_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:4000";
+import { serverApiUrl } from "@/lib/api-base";
 
 export async function proxyAdminLogs(
   path: string,
@@ -16,7 +12,7 @@ export async function proxyAdminLogs(
   }
 
   try {
-    const backendRes = await fetch(`${API_URL}/api/admin/logs${path}`, {
+    const backendRes = await fetch(serverApiUrl(`/api/admin/logs${path}`), {
       ...init,
       headers: {
         Authorization: `Bearer ${tokenOrResponse}`,
@@ -51,7 +47,7 @@ export async function proxyAdminAudit(
   }
 
   try {
-    const backendRes = await fetch(`${API_URL}/api/admin/audit${path}`, {
+    const backendRes = await fetch(serverApiUrl(`/api/admin/audit${path}`), {
       ...init,
       headers: {
         Authorization: `Bearer ${tokenOrResponse}`,

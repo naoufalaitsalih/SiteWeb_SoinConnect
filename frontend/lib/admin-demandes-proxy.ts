@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
-
-const API_URL =
-  process.env.API_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:4000";
-
+import { serverApiUrl } from "@/lib/api-base";
 export async function getAdminToken() {
   const result = await requireAdminApiToken();
   return typeof result === "string" ? result : null;
@@ -21,7 +16,7 @@ export async function proxyAdminDemandes(
   }
 
   try {
-    const backendRes = await fetch(`${API_URL}/api/admin/demandes${path}`, {
+    const backendRes = await fetch(serverApiUrl(`/api/admin/demandes${path}`), {
       ...init,
       headers: {
         Authorization: `Bearer ${tokenOrResponse}`,

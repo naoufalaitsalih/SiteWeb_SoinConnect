@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
-
-const API_URL =
-  process.env.API_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:4000";
-
+import { serverApiUrl } from "@/lib/api-base";
 type RouteContext = { params: Promise<{ id: string }> };
 
 export async function GET(_request: NextRequest, context: RouteContext) {
@@ -17,7 +12,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
   const { id } = await context.params;
 
   try {
-    const backendRes = await fetch(`${API_URL}/api/admin/requests/${id}/notes`, {
+    const backendRes = await fetch(serverApiUrl(`/api/admin/requests/${id}/notes`), {
       headers: { Authorization: `Bearer ${tokenOrResponse}` },
       cache: "no-store",
     });
@@ -43,7 +38,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   const body = await request.json();
 
   try {
-    const backendRes = await fetch(`${API_URL}/api/admin/requests/${id}/notes`, {
+    const backendRes = await fetch(serverApiUrl(`/api/admin/requests/${id}/notes`), {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${tokenOrResponse}`,

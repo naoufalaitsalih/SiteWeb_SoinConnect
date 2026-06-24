@@ -1,18 +1,13 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE } from "@/lib/admin-auth";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
-
-const API_URL =
-  process.env.API_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:4000";
-
+import { serverApiUrl } from "@/lib/api-base";
 export async function POST() {
   const tokenOrResponse = await requireAdminApiToken();
 
   if (typeof tokenOrResponse === "string") {
     try {
-      await fetch(`${API_URL}/api/admin/auth/logout`, {
+      await fetch(serverApiUrl("/api/admin/auth/logout"), {
         method: "POST",
         headers: { Authorization: `Bearer ${tokenOrResponse}` },
       });

@@ -34,10 +34,7 @@ export type ApiDemandeResponse = {
   data?: ApiDemande;
 };
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
-
-/** Proxy same-origin (cookie admin) — forwards to `${API_BASE}/api/admin/demandes` */
+/** Proxy same-origin (cookie admin) — forwards to backend via Next.js API routes */
 const PROXY_BASE = "/api/admin/demandes";
 
 export function mapApiStatusToUi(status: ApiDemandeStatus): DemandeStatus {
@@ -220,4 +217,3 @@ export async function deleteDemande(id: number): Promise<ApiDemandeResponse> {
   }
 }
 
-export { API_BASE };

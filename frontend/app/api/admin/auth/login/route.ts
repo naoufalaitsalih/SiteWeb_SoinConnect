@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_COOKIE } from "@/lib/admin-auth";
-
-const API_URL =
-  process.env.API_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:4000";
-
+import { serverApiUrl } from "@/lib/api-base";
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 10;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -43,7 +38,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const backendRes = await fetch(`${API_URL}/api/admin/auth/login`, {
+    const backendRes = await fetch(serverApiUrl("/api/admin/auth/login"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

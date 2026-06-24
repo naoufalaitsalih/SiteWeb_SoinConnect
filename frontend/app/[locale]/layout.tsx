@@ -32,6 +32,12 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
+
+  if (!routing.locales.includes(locale as Locale)) {
+    return {};
+  }
+
+  setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata" });
 
   return {
