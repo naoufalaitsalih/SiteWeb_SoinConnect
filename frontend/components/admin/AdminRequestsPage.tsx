@@ -116,10 +116,12 @@ export default function AdminRequestsPage() {
             <div>
               <h2 className="font-semibold text-red-800">{t("errorTitle")}</h2>
               <p className="mt-1 text-sm text-red-700">{errorMessage}</p>
-              <p className="mt-2 text-xs text-red-600">
-                {t("errorBackendHint")}{" "}
-                <code className="rounded bg-red-100 px-1">/api/admin/demandes</code>
-              </p>
+              {process.env.NODE_ENV !== "production" && (
+                <p className="mt-2 text-xs text-red-600">
+                  {t("errorBackendHint")}{" "}
+                  <code className="rounded bg-red-100 px-1">/api/admin/demandes</code>
+                </p>
+              )}
               <button
                 type="button"
                 onClick={fetchRequests}

@@ -1,4 +1,5 @@
 import type { Demande, DemandeStatus } from "@/lib/admin-types";
+import { API_UNAVAILABLE_MESSAGE } from "@/lib/env";
 
 export type ApiDemandeStatus = "EN_ATTENTE" | "ACCEPTEE" | "REFUSEE";
 
@@ -110,7 +111,7 @@ export async function fetchAdminDemandes(): Promise<{
         demandes: [],
         error: res.ok
           ? "Erreur de chargement des demandes"
-          : "Backend indisponible. Vérifiez que le serveur API tourne sur le port 4000.",
+          : API_UNAVAILABLE_MESSAGE,
       };
     }
 
@@ -139,7 +140,7 @@ export async function fetchAdminDemandes(): Promise<{
     return {
       demandes: [],
       error:
-        "Backend indisponible. Vérifiez que le serveur API tourne sur le port 4000.",
+        API_UNAVAILABLE_MESSAGE,
     };
   }
 }
@@ -165,7 +166,7 @@ export async function updateDemandeStatus(
     return {
       success: false,
       message:
-        "Backend indisponible. Vérifiez que le serveur API tourne sur le port 4000.",
+        API_UNAVAILABLE_MESSAGE,
     };
   }
 }
@@ -191,7 +192,7 @@ export async function saveDemandeNotes(
     return {
       success: false,
       message:
-        "Backend indisponible. Vérifiez que le serveur API tourne sur le port 4000.",
+        API_UNAVAILABLE_MESSAGE,
     };
   }
 }
@@ -212,7 +213,7 @@ export async function deleteDemande(id: number): Promise<ApiDemandeResponse> {
     return {
       success: false,
       message:
-        "Backend indisponible. Vérifiez que le serveur API tourne sur le port 4000.",
+        API_UNAVAILABLE_MESSAGE,
     };
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_COOKIE } from "@/lib/admin-auth";
 import { serverApiUrl } from "@/lib/api-base";
+import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 10;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -70,8 +71,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Impossible de contacter le serveur. Vérifiez que le backend tourne sur le port 4000.",
+        message: API_UNREACHABLE_MESSAGE,
       },
       { status: 503 }
     );

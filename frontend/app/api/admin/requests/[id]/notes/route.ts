@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
 import { serverApiUrl } from "@/lib/api-base";
+import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 type RouteContext = { params: Promise<{ id: string }> };
 
 export async function GET(_request: NextRequest, context: RouteContext) {
@@ -22,7 +23,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
   } catch (error) {
     console.error("[admin/requests/notes GET proxy]", error);
     return NextResponse.json(
-      { success: false, message: "Impossible de contacter le serveur" },
+      { success: false, message: API_UNREACHABLE_MESSAGE },
       { status: 503 }
     );
   }
@@ -52,7 +53,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   } catch (error) {
     console.error("[admin/requests/notes PATCH proxy]", error);
     return NextResponse.json(
-      { success: false, message: "Impossible de contacter le serveur" },
+      { success: false, message: API_UNREACHABLE_MESSAGE },
       { status: 503 }
     );
   }

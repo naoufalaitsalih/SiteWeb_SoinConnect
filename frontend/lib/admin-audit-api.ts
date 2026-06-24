@@ -1,4 +1,5 @@
 import type { AuditLog, AuditListResponse } from "@/lib/admin-audit-types";
+import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 
 const PROXY_BASE = "/api/admin/audit";
 
@@ -40,7 +41,7 @@ export async function fetchAuditLogs(params: {
     return {
       logs: [],
       total: 0,
-      error: "Impossible de contacter le serveur d'audit",
+      error: API_UNREACHABLE_MESSAGE,
     };
   }
 }

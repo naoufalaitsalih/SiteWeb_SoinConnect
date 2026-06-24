@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
 import { serverApiUrl } from "@/lib/api-base";
+import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 export async function getAdminToken() {
   const result = await requireAdminApiToken();
   return typeof result === "string" ? result : null;
@@ -33,8 +34,7 @@ export async function proxyAdminDemandes(
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Impossible de contacter le serveur. Vérifiez que le backend tourne sur le port 4000.",
+        message: API_UNREACHABLE_MESSAGE,
       },
       { status: 503 }
     );
