@@ -27,7 +27,7 @@ function mapLoginError(error: unknown): { status: number; message: string } {
       return {
         status: 503,
         message:
-          "Base de données inaccessible. Vérifiez que MySQL tourne et DATABASE_URL dans backend/.env",
+          "Base de données inaccessible. Vérifiez DATABASE_URL dans backend/.env",
       };
     case "P2021":
       return {
