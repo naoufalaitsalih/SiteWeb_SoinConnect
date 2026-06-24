@@ -1,0 +1,35 @@
+---
+description: Ne jamais lancer ou redémarrer les serveurs sans accord explicite
+alwaysApply: true
+---
+
+# Contrôle manuel des serveurs
+
+L'utilisateur garde le contrôle total du lancement des serveurs frontend et backend.
+
+## Interdictions
+
+- Ne jamais exécuter `npm run dev` automatiquement.
+- Ne jamais exécuter `npm start` automatiquement.
+- Ne jamais redémarrer le serveur après une modification de code.
+- Ne jamais utiliser de tâche ou commande du type « Restart Next.js dev server ».
+- Ne jamais ouvrir un terminal automatiquement pour lancer un serveur.
+- Ne jamais exécuter de commandes shell sans accord explicite de l'utilisateur.
+
+## Si un redémarrage est nécessaire
+
+Afficher uniquement :
+
+```
+Veuillez exécuter manuellement :
+npm run dev
+```
+
+Puis attendre l'action de l'utilisateur. Ne pas lancer la commande soi-même.
+
+Pour le backend, indiquer séparément si besoin :
+
+```
+cd backend
+npm run dev
+```

@@ -1,0 +1,371 @@
+{
+  "metadata": {
+    "title": "SoinsConnect — Soins à domicile professionnels",
+    "description": "SoinsConnect vous accompagne avec des soins à domicile de qualité, assurés par des professionnels de santé qualifiés."
+  },
+  "header": {
+    "menu": "Menu",
+    "tagline": "Soins à domicile professionnels",
+    "home": "Accueil",
+    "services": "Nos services",
+    "howItWorks": "Comment ça marche",
+    "about": "À propos",
+    "trust": "Confiance",
+    "contact": "Contact",
+    "makeRequest": "Faire une demande"
+  },
+  "hero": {
+    "badge": "Soins à domicile professionnels",
+    "titleLine1": "Des soins humains,",
+    "titleLine2": "chez vous,",
+    "titleLine3": "en toute confiance.",
+    "subtitle": "SoinsConnect vous aide à trouver rapidement un professionnel de santé qualifié pour des soins à domicile adaptés à vos besoins.",
+    "feature1": "Professionnels vérifiés",
+    "feature2": "Intervention selon disponibilité",
+    "feature3": "Accompagnement personnalisé",
+    "ctaRequest": "Faire une demande",
+    "ctaDiscover": "Découvrir les services",
+    "imageAlt": "Professionnelle de santé souriante en blouse blanche utilisant une tablette dans un cabinet médical moderne",
+    "card1": {
+      "title": "Intervention organisée",
+      "subtitle": "Selon disponibilité"
+    },
+    "card2": {
+      "title": "Professionnels vérifiés",
+      "subtitle": "Profils contrôlés"
+    },
+    "card3": {
+      "title": "Suivi personnalisé",
+      "subtitle": "Accompagnement continu"
+    }
+  },
+  "statsBar": {
+    "requests": {
+      "title": "Demandes centralisées",
+      "description": "Un seul formulaire pour expliquer votre besoin"
+    },
+    "response": {
+      "title": "Réponse rapide",
+      "description": "Traitement selon disponibilité"
+    },
+    "professionals": {
+      "title": "Professionnels vérifiés",
+      "description": "Profils contrôlés avant mise en relation"
+    },
+    "followUp": {
+      "title": "Suivi simple",
+      "description": "Demande consultable et organisée"
+    }
+  },
+  "services": {
+    "badge": "NOS SERVICES",
+    "titleBefore": "Nos services de",
+    "titleHighlight": "soins à domicile",
+    "subtitle": "Des prestations essentielles pour accompagner les patients à domicile avec sérieux, écoute et organisation.",
+    "nursing": {
+      "title": "Soins infirmiers à domicile",
+      "description": "Pansements, injections, perfusions et suivi des constantes réalisés par des professionnels qualifiés.",
+      "imageAlt": "Infirmier ou infirmière faisant un soin à domicile : pansement, prise de tension, injection ou suivi médical.",
+      "features": {
+        "f1": "Pansements et soins de plaies",
+        "f2": "Injections et perfusions",
+        "f3": "Prise de constantes",
+        "f4": "Suivi médical à domicile"
+      }
+    },
+    "personalCare": {
+      "title": "Aide à la personne",
+      "description": "Un accompagnement humain pour les gestes du quotidien et le maintien de l'autonomie.",
+      "imageAlt": "Aide-soignant accompagnant une personne âgée dans les gestes quotidiens, ambiance chaleureuse à domicile.",
+      "features": {
+        "f1": "Aide à la toilette et à l'habillage",
+        "f2": "Aide au lever et au coucher",
+        "f3": "Accompagnement aux rendez-vous",
+        "f4": "Présence et écoute"
+      }
+    },
+    "postOp": {
+      "title": "Suivi post-opératoire",
+      "description": "Un suivi organisé après une intervention pour favoriser une récupération plus sereine.",
+      "imageAlt": "Patient en convalescence avec suivi médical à domicile, infirmier qui vérifie un pansement ou prend des constantes.",
+      "features": {
+        "f1": "Surveillance de l'état général",
+        "f2": "Soins des cicatrices",
+        "f3": "Suivi des consignes médicales",
+        "f4": "Orientation si besoin"
+      }
+    },
+    "reassurance": {
+      "verified": "Professionnels vérifiés",
+      "organization": "Organisation simple",
+      "followUp": "Suivi personnalisé",
+      "requests": "Demande centralisée"
+    }
+  },
+  "howItWorks": {
+    "title": "Comment obtenir vos soins à domicile ?",
+    "subtitle": "Un processus simple, rapide et organisé pour vous mettre en relation avec le professionnel adapté à votre besoin.",
+    "step1": {
+      "title": "Décrivez votre besoin",
+      "description": "Remplissez le formulaire en quelques minutes :",
+      "footnote": "Le formulaire nous permet de comprendre précisément votre demande.",
+      "bullets": {
+        "b1": "Type de soin recherché",
+        "b2": "Adresse d'intervention",
+        "b3": "Date souhaitée",
+        "b4": "Informations complémentaires"
+      }
+    },
+    "step2": {
+      "title": "Analyse et mise en relation",
+      "description": "Notre équipe analyse votre demande et identifie les professionnels disponibles correspondant à votre besoin.",
+      "footnote": "Chaque profil est vérifié avant la mise en relation."
+    },
+    "step3": {
+      "title": "Intervention à domicile",
+      "description": "Le professionnel sélectionné intervient directement à votre domicile selon les informations convenues.",
+      "footnote": "Vous bénéficiez d'un accompagnement personnalisé tout au long du processus."
+    },
+    "why": {
+      "title": "Pourquoi choisir SoinsConnect ?",
+      "verified": {
+        "title": "Professionnels vérifiés",
+        "description": "Tous les profils sont contrôlés avant leur intégration."
+      },
+      "centralized": {
+        "title": "Demande centralisée",
+        "description": "Une seule demande suffit pour expliquer votre besoin."
+      },
+      "human": {
+        "title": "Accompagnement humain",
+        "description": "Une équipe disponible pour vous orienter."
+      },
+      "organization": {
+        "title": "Organisation simplifiée",
+        "description": "Un parcours clair de la demande jusqu'à l'intervention."
+      }
+    }
+  },
+  "benefits": {
+    "title": "Pourquoi choisir SoinsConnect ?",
+    "subtitle": "Nous simplifions l'accès aux soins à domicile grâce à une mise en relation claire, humaine et sécurisée.",
+    "comfort": {
+      "title": "Restez dans le confort de votre domicile",
+      "description": "Recevez vos soins dans un environnement familier sans déplacements inutiles ni attente en établissement.",
+      "imageAlt": "Personne âgée recevant un soin à domicile"
+    },
+    "verified": {
+      "title": "Professionnels vérifiés",
+      "description": "Les professionnels présentés sur la plateforme sont vérifiés avant leur mise en relation avec les patients.",
+      "imageAlt": "Professionnel de santé avec patient"
+    },
+    "personalized": {
+      "title": "Accompagnement personnalisé",
+      "description": "Chaque demande est différente. Nous favorisons une prise en charge adaptée à votre situation.",
+      "imageAlt": "Discussion ou accompagnement humain à domicile"
+    },
+    "process": {
+      "title": "Processus simple et organisé",
+      "description": "Une seule demande suffit pour expliquer votre besoin et démarrer votre recherche de professionnel.",
+      "imageAlt": "Organisation de rendez-vous de soins à domicile"
+    },
+    "gains": {
+      "title": "Ce que vous gagnez avec SoinsConnect",
+      "simplicity": "Plus de simplicité",
+      "travel": "Moins de déplacements",
+      "centralized": "Une demande centralisée",
+      "followUp": "Un suivi plus clair"
+    }
+  },
+  "trust": {
+    "titleBefore": "Confiance &",
+    "titleHighlight": "sécurité",
+    "subtitle": "Vos informations et votre demande sont traitées avec sérieux, confidentialité et transparence.",
+    "analyticsNotice": "Nous collectons des données techniques anonymisées pour améliorer le service et sécuriser la plateforme.",
+    "confidential": {
+      "title": "Données confidentielles",
+      "description": "Les informations transmises via le formulaire sont utilisées uniquement pour traiter votre demande."
+    },
+    "verified": {
+      "title": "Professionnels vérifiés",
+      "description": "Les profils professionnels sont contrôlés avant toute mise en relation."
+    },
+    "process": {
+      "title": "Processus encadré",
+      "description": "Chaque demande est organisée pour faciliter la prise de contact et le suivi."
+    },
+    "transparency": {
+      "title": "Transparence",
+      "description": "Vous gardez une vision claire sur votre demande, sans engagement caché."
+    }
+  },
+  "form": {
+    "title": "Expliquez votre besoin de soin",
+    "subtitle": "Remplissez une demande simple et notre équipe vous aide à organiser la mise en relation avec un professionnel adapté.",
+    "fullName": "Nom complet",
+    "phone": "Téléphone",
+    "email": "Email",
+    "optional": "(optionnel)",
+    "address": "Adresse d'intervention",
+    "careType": "Type de soin",
+    "description": "Description du besoin",
+    "descriptionPlaceholder": "Décrivez brièvement votre situation, le soin recherché ou les informations importantes.",
+    "requestedDate": "Date souhaitée",
+    "requestedTime": "Heure souhaitée",
+    "urgency": "Urgence",
+    "submit": "Envoyer ma demande",
+    "submitting": "Envoi en cours...",
+    "disclaimer": "En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande de soin. Nous collectons des données techniques anonymisées pour améliorer le service et sécuriser la plateforme.",
+    "placeholders": {
+      "fullName": "Jean Dupont",
+      "phone": "06 12 34 56 78",
+      "email": "jean@email.com",
+      "address": "12 rue de la Santé, 75000 Paris"
+    },
+    "careTypes": {
+      "nursing": {
+        "title": "Soins infirmiers",
+        "description": "Pansements, injections, suivi médical à domicile"
+      },
+      "personalCare": {
+        "title": "Aide à la personne",
+        "description": "Gestes du quotidien et maintien de l'autonomie"
+      },
+      "postOp": {
+        "title": "Suivi post-opératoire",
+        "description": "Récupération après une intervention"
+      },
+      "senior": {
+        "title": "Accompagnement senior",
+        "description": "Soutien adapté aux personnes âgées"
+      },
+      "specialized": {
+        "title": "Soins spécialisés",
+        "description": "Besoins spécifiques à préciser"
+      },
+      "other": {
+        "title": "Autre besoin",
+        "description": "Décrivez votre demande ci-dessous"
+      }
+    },
+    "urgencyOptions": {
+      "normal": {
+        "title": "Demande normale",
+        "description": "Organisation selon disponibilité habituelle"
+      },
+      "urgent": {
+        "title": "Besoin urgent",
+        "description": "Situation nécessitant une attention prioritaire"
+      }
+    },
+    "sidebar": {
+      "title": "Ce qui se passe après votre demande",
+      "step1": "Votre demande est enregistrée",
+      "step2": "Nous analysons les informations transmises",
+      "step3": "Une mise en relation est organisée selon disponibilité",
+      "trust": {
+        "confidential": "Informations traitées avec confidentialité",
+        "verified": "Professionnels vérifiés",
+        "noCommitment": "Demande sans engagement immédiat"
+      }
+    },
+    "errors": {
+      "fullName": "Le nom complet est requis (min. 2 caractères)",
+      "phone": "Numéro de téléphone invalide",
+      "email": "Adresse email invalide",
+      "address": "L'adresse d'intervention est requise",
+      "careType": "Veuillez sélectionner un type de soin",
+      "requestedDate": "La date souhaitée est requise",
+      "requestedTime": "L'heure souhaitée est requise",
+      "formInvalid": "Veuillez corriger les erreurs dans le formulaire.",
+      "generic": "Une erreur est survenue. Veuillez réessayer.",
+      "success": "Votre demande a bien été enregistrée. Nous allons l'analyser et revenir vers vous."
+    }
+  },
+  "footer": {
+    "description": "SoinsConnect facilite la mise en relation entre patients et professionnels de santé pour organiser des soins à domicile de manière simple, humaine et sécurisée au Maroc.",
+    "navigation": "Navigation",
+    "servicesTitle": "Services",
+    "contact": "Contact",
+    "area": "Maroc",
+    "availability": "Selon disponibilité des professionnels",
+    "copyright": "© 2026 SoinsConnect Maroc. Tous droits réservés.",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "nav": {
+      "home": "Accueil",
+      "services": "Nos services",
+      "howItWorks": "Comment ça marche",
+      "trust": "Confiance & sécurité",
+      "request": "Faire une demande"
+    },
+    "services": {
+      "nursing": "Soins infirmiers",
+      "personalCare": "Aide à la personne",
+      "postOp": "Suivi post-opératoire",
+      "senior": "Accompagnement senior",
+      "homeCare": "Soins à domicile"
+    }
+  },
+  "admin": {
+    "metadata": {
+      "title": "Admin — Demandes | SoinsConnect",
+      "description": "Gestion des demandes de soin SoinsConnect"
+    },
+    "brand": "Admin",
+    "requests": "Demandes",
+    "backToSite": "← Retour au site",
+    "title": "Demandes de soin",
+    "subtitle": "Liste des demandes reçues via le formulaire patient.",
+    "requestCount": "{count, plural, one {# demande} other {# demandes}}",
+    "refresh": "Actualiser",
+    "loading": "Chargement...",
+    "loadingRequests": "Chargement des demandes...",
+    "errorTitle": "Erreur de chargement",
+    "errorBackend": "Impossible de contacter le serveur. Vérifiez que le backend est démarré.",
+    "errorBackendHint": "Assurez-vous que le backend tourne sur",
+    "retry": "Réessayer",
+    "emptyTitle": "Aucune demande pour le moment",
+    "emptySubtitle": "Les demandes soumises via le formulaire apparaîtront ici.",
+    "viewForm": "Voir le formulaire",
+    "table": {
+      "id": "ID",
+      "fullName": "Nom complet",
+      "phone": "Téléphone",
+      "email": "Email",
+      "address": "Adresse",
+      "careType": "Type de soin",
+      "urgency": "Urgence",
+      "status": "Statut",
+      "requestedDate": "Date souhaitée",
+      "time": "Heure",
+      "createdAt": "Créée le",
+      "noEmail": "—"
+    },
+    "status": {
+      "pending": "En attente",
+      "in_progress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "urgency": {
+      "yes": "Oui",
+      "no": "Non"
+    }
+  },
+  "language": {
+    "fr": "FR",
+    "ar": "AR"
+  },
+  "errors": {
+    "title": "Une erreur est survenue",
+    "description": "Le site a rencontré un problème inattendu. Vous pouvez réessayer ou revenir à l'accueil.",
+    "retry": "Réessayer",
+    "home": "Retour à l'accueil"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "home": "Retour à l'accueil"
+  }
+}
