@@ -1,18 +1,16 @@
 import "dotenv/config";
 import app from "./app";
-import { ensureDatabaseSchema } from "./prisma/ensureSchema";
-import { ensureOfficialAdmin } from "./prisma/ensureOfficialAdmin";
+import { prepareDatabaseAndAdmin } from "./prisma/bootstrap";
 
 const PORT = Number(process.env.PORT) || 4000;
 
-ensureDatabaseSchema()
-  .then(() => ensureOfficialAdmin())
+prepareDatabaseAndAdmin()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`SoinsConnect API running on http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
-    console.error("[schema] Impossible de préparer la base de données:", error);
+    console.error("[bootstrap] Impossible de préparer la base de données:", error);
     process.exit(1);
   });

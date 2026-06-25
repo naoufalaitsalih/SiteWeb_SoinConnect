@@ -11,6 +11,12 @@ async function main() {
   const email = normalizeAdminEmail(OFFICIAL_ADMIN.email);
   const hashedPassword = await bcrypt.hash(OFFICIAL_ADMIN.password, 12);
 
+  await prisma.$executeRaw`
+    DELETE FROM "admins"
+    WHERE LOWER("email") = LOWER(${email})
+      AND "email" <> ${email}
+  `;
+
   const admin = await prisma.admin.upsert({
     where: { email },
     update: {
