@@ -91,7 +91,6 @@ export async function authenticateAdmin(input: AdminLoginInput) {
     authLog("échec", {
       reason: "invalid_bcrypt_hash",
       id: admin.id,
-      hashPrefix: admin.password.slice(0, 7),
     });
     return {
       success: false as const,
