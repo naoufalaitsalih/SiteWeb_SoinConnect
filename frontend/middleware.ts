@@ -29,7 +29,17 @@ export default async function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/admin")) {
     const token = request.cookies.get(ADMIN_COOKIE)?.value;
-    const isAuthenticated = token ? await isValidAdminToken(token) : false;
+    const cookieFound = Boolean(token);
+
+    console.log("[middleware/admin] path:", pathname);
+    console.log("[middleware/admin] COOKIE FOUND:", cookieFound);
+
+    const isAuthenticated = cookieFound
+      ? await isValidAdminToken(token!)
+      : false;
+
+    console.log("[middleware/admin] JWT VALID:", isAuthenticated);
+
     const isPublic = isAdminPublicPath(pathname);
 
     if (pathname === "/admin") {
@@ -54,6 +64,7 @@ export default async function middleware(request: NextRequest) {
     }
 
     if (!isPublic && !isAuthenticated) {
+      console.log("[middleware/admin] REDIRECT → /admin/login (route protégée)");
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);

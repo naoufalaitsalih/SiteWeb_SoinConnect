@@ -17,13 +17,29 @@ function getJwtSecretKey(): Uint8Array {
 
 export const ADMIN_COOKIE = "admin_token";
 
+/** Options cookie session admin — utilisées par le proxy Next.js (same-origin). */
+export const ADMIN_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  path: "/",
+  maxAge: 60 * 60 * 8,
+};
+
+/** credentials obligatoire pour que le navigateur envoie/reçoive admin_token */
+export const ADMIN_FETCH_CREDENTIALS = "include" as RequestCredentials;
+
 export async function isValidAdminToken(token: string): Promise<boolean> {
   try {
     await jwtVerify(token, getJwtSecretKey(), {
       algorithms: ["HS256"],
     });
     return true;
-  } catch {
+  } catch (error) {
+    console.warn(
+      "[admin-auth] JWT verification failed:",
+      error instanceof Error ? error.message : String(error)
+    );
     return false;
   }
 }

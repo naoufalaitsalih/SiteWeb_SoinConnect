@@ -1,3 +1,5 @@
+import { adminFetch } from "@/lib/admin-fetch";
+
 export type EventLogEntry = {
   id: number;
   eventType: string;
@@ -66,9 +68,8 @@ function buildQueryString(params: LogsFilterParams): string {
 export async function fetchAdminEventLogs(
   params: LogsFilterParams = {}
 ): Promise<{ logs: EventLogEntry[]; total: number; page: number; limit: number }> {
-  const res = await fetch(`/api/admin/logs${buildQueryString(params)}`, {
+  const res = await adminFetch(`/api/admin/logs${buildQueryString(params)}`, {
     method: "GET",
-    credentials: "include",
     cache: "no-store",
   });
 
@@ -87,9 +88,8 @@ export async function fetchAdminEventLogs(
 }
 
 export async function deleteAdminEventLogs(ids: number[]): Promise<number> {
-  const res = await fetch("/api/admin/logs", {
+  const res = await adminFetch("/api/admin/logs", {
     method: "DELETE",
-    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ids }),
   });
@@ -106,9 +106,8 @@ export async function deleteAdminEventLogs(ids: number[]): Promise<number> {
 export async function clearAdminEventLogs(
   filters: Pick<LogsFilterParams, "startDate" | "endDate"> = {}
 ): Promise<number> {
-  const res = await fetch("/api/admin/logs/clear", {
+  const res = await adminFetch("/api/admin/logs/clear", {
     method: "DELETE",
-    credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(filters),
   });

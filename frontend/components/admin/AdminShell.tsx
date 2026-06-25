@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ClipboardList, LogOut, Menu, ScrollText, ShieldCheck, X } from "lucide-react";
 import { useState } from "react";
+import { adminFetch } from "@/lib/admin-fetch";
 import AdminBrandLogo from "@/components/admin/AdminBrandLogo";
 import { clearAdminSession } from "@/lib/admin-session";
 
@@ -52,7 +53,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleLogout() {
-    await fetch("/api/admin/auth/logout", { method: "POST", credentials: "include" });
+    await adminFetch("/api/admin/auth/logout", { method: "POST" });
     clearAdminSession();
     window.location.assign("/admin/login");
   }

@@ -1,4 +1,5 @@
 import type { AuditLog, AuditListResponse } from "@/lib/admin-audit-types";
+import { adminFetch } from "@/lib/admin-fetch";
 import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 
 const PROXY_BASE = "/api/admin/audit";
@@ -18,8 +19,7 @@ export async function fetchAuditLogs(params: {
   if (params.limit) search.set("limit", String(params.limit));
 
   try {
-    const res = await fetch(`${PROXY_BASE}?${search.toString()}`, {
-      credentials: "include",
+    const res = await adminFetch(`${PROXY_BASE}?${search.toString()}`, {
       cache: "no-store",
     });
 

@@ -1,3 +1,5 @@
+import { adminFetch } from "@/lib/admin-fetch";
+
 export type AdminNotesResponse = {
   success: boolean;
   message?: string;
@@ -11,9 +13,7 @@ export type AdminNotesResponse = {
 export async function fetchAdminNotes(
   requestId: number
 ): Promise<AdminNotesResponse> {
-  const res = await fetch(`/api/admin/requests/${requestId}/notes`, {
-    credentials: "include",
-  });
+  const res = await adminFetch(`/api/admin/requests/${requestId}/notes`);
   return res.json();
 }
 
@@ -21,10 +21,9 @@ export async function saveAdminNotes(
   requestId: number,
   adminNotes: string
 ): Promise<AdminNotesResponse> {
-  const res = await fetch(`/api/admin/requests/${requestId}/notes`, {
+  const res = await adminFetch(`/api/admin/requests/${requestId}/notes`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
     body: JSON.stringify({ adminNotes: adminNotes.trim() || null }),
   });
   return res.json();

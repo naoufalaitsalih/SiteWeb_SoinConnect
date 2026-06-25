@@ -1,3 +1,4 @@
+import { adminFetch } from "@/lib/admin-fetch";
 import type { Demande, DemandeStatus } from "@/lib/admin-types";
 import { API_UNAVAILABLE_MESSAGE } from "@/lib/env";
 
@@ -99,8 +100,7 @@ export async function fetchAdminDemandes(): Promise<{
   error?: string;
 }> {
   try {
-    const res = await fetch(PROXY_BASE, {
-      credentials: "include",
+    const res = await adminFetch(PROXY_BASE, {
       cache: "no-store",
     });
 
@@ -150,10 +150,9 @@ export async function updateDemandeStatus(
   status: ApiDemandeStatus
 ): Promise<ApiDemandeResponse> {
   try {
-    const res = await fetch(`${PROXY_BASE}/${id}/status`, {
+    const res = await adminFetch(`${PROXY_BASE}/${id}/status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ status }),
     });
     return (
@@ -176,10 +175,9 @@ export async function saveDemandeNotes(
   adminNotes: string
 ): Promise<ApiDemandeResponse> {
   try {
-    const res = await fetch(`${PROXY_BASE}/${id}/notes`, {
+    const res = await adminFetch(`${PROXY_BASE}/${id}/notes`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ admin_notes: adminNotes.trim() || "" }),
     });
     return (
@@ -199,9 +197,8 @@ export async function saveDemandeNotes(
 
 export async function deleteDemande(id: number): Promise<ApiDemandeResponse> {
   try {
-    const res = await fetch(`${PROXY_BASE}/${id}`, {
+    const res = await adminFetch(`${PROXY_BASE}/${id}`, {
       method: "DELETE",
-      credentials: "include",
     });
     return (
       (await parseJson<ApiDemandeResponse>(res)) ?? {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, ADMIN_COOKIE_OPTIONS } from "@/lib/admin-auth";
 import { serverApiUrl } from "@/lib/api-base";
 import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 
@@ -126,13 +126,17 @@ export async function POST(request: NextRequest) {
       admin,
     });
 
-    response.cookies.set(ADMIN_COOKIE, data.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 8,
-    });
+    response.cookies.set(ADMIN_COOKIE, data.token, ADMIN_COOKIE_OPTIONS);
+
+    const setCookieHeader = response.headers.get("set-cookie");
+    console.log(
+      "[admin/login proxy] SET-COOKIE dans réponse HTTP:",
+      setCookieHeader ? "present" : "missing"
+    );
+    console.log(
+      "[admin/login proxy] COOKIE FOUND (response.cookies):",
+      response.cookies.has(ADMIN_COOKIE)
+    );
 
     return response;
   } catch (error) {
