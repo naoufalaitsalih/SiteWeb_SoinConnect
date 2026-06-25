@@ -31,7 +31,10 @@ export async function postEventLog(
       city: geo.city,
     });
 
-    res.status(201).json({ success: true });
+    res.status(201).json({
+      success: true,
+      message: "Événement enregistré",
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       res.status(400).json({
@@ -56,11 +59,14 @@ export async function getAdminEventLogs(
 
     res.status(200).json({
       success: true,
-      data: result.data,
-      count: result.data.length,
-      total: result.total,
-      page: result.page,
-      limit: result.limit,
+      message: "Journaux récupérés",
+      data: {
+        items: result.data,
+        count: result.data.length,
+        total: result.total,
+        page: result.page,
+        limit: result.limit,
+      },
     });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -101,7 +107,7 @@ export async function deleteAdminEventLogs(
     res.status(200).json({
       success: true,
       message: `${count} journal(aux) supprimé(s)`,
-      count,
+      data: { count },
     });
   } catch (error) {
     if (error instanceof ZodError) {
@@ -142,7 +148,7 @@ export async function clearAdminEventLogs(
     res.status(200).json({
       success: true,
       message: `${count} journal(aux) supprimé(s)`,
-      count,
+      data: { count },
     });
   } catch (error) {
     if (error instanceof ZodError) {

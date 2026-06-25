@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import CareTypeSelector from "@/components/request-form/CareTypeSelector";
 import UrgencySelector from "@/components/request-form/UrgencySelector";
-import { submitCareRequest } from "@/lib/api";
+import { createCareRequest } from "@/lib/api";
 import {
   trackFormError,
   trackFormStart,
@@ -94,31 +94,42 @@ export default function CareRequestFormClient() {
         isUrgent: formData.isUrgent,
       };
 
-      await submitCareRequest(payload);
+      const result = await createCareRequest(payload);
+
+      if (!result.success) {
+        setStatus("error");
+        if (result.errors?.length) {
+          const fieldErrors: Partial<Record<keyof CareRequestFormData, string>> = {};
+          result.errors.forEach((error) => {
+            const field = error.field as keyof CareRequestFormData;
+            fieldErrors[field] = error.message;
+          });
+          setErrors(fieldErrors);
+        }
+        setServerMessage(result.message ?? t("errors.generic"));
+        trackApiError("/api/requests", result.errors?.length ? 400 : 500);
+        trackFormError("care_request", {
+          reason: "server_error",
+          status: result.errors?.length ? 400 : undefined,
+        });
+        return;
+      }
+
       trackFormSubmit("care_request");
-      setStatus("success");      setServerMessage(t("errors.success"));
+      setStatus("success");
+      setServerMessage(result.message ?? t("errors.success"));
       setFormData(initialFormData);
       setErrors({});
     } catch (err) {
       const apiError = err as ApiResponse;
       setStatus("error");
-
-      if (apiError.errors?.length) {
-        const fieldErrors: Partial<Record<keyof CareRequestFormData, string>> = {};
-        apiError.errors.forEach((error) => {
-          const field = error.field as keyof CareRequestFormData;
-          fieldErrors[field] = error.message;
-        });
-        setErrors(fieldErrors);
-      }
-
       setServerMessage(apiError.message ?? t("errors.generic"));
-      trackApiError("/api/requests", apiError.errors?.length ? 400 : 500);
-      trackFormError("care_request", {
-        reason: "server_error",
-        status: apiError.errors?.length ? 400 : undefined,
-      });
-    }  };
+      trackApiError("/api/requests", 500);
+      trackFormError("care_request", { reason: "server_error" });
+    } finally {
+      setStatus((current) => (current === "loading" ? "idle" : current));
+    }
+  };
 
   const today = new Date().toISOString().split("T")[0];
 

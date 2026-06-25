@@ -8,10 +8,9 @@ import adminRequestsRouter from "./routes/adminRequests";
 import logsRouter from "./routes/logs";
 import adminLogsRouter from "./routes/adminLogs";
 import adminAuditRouter from "./routes/adminAudit";
-import adminDebugRouter from "./routes/adminDebug";
 import { globalApiLimiter } from "./middleware/rateLimiters";
-import { AUTH_DEBUG_VERSION } from "./services/adminAuthService";
 import { prisma } from "./prisma/client";
+
 const app = express();
 
 app.set("trust proxy", 1);
@@ -23,7 +22,8 @@ app.use(
   })
 );
 
-const corsOrigins = (process.env.CORS_ORIGIN ?? "http://localhost:3000")
+const defaultDevOrigins = "http://localhost:3000,http://127.0.0.1:3000";
+const corsOrigins = (process.env.CORS_ORIGIN ?? defaultDevOrigins)
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -46,18 +46,18 @@ app.get("/api/health", async (_req: Request, res: Response) => {
     res.json({
       success: true,
       message: "SoinsConnect API is running",
-      database: "connected",
-      authDebugVersion: AUTH_DEBUG_VERSION,
+      data: { database: "connected" },
     });
   } catch (error) {
     console.error("[health] Database check failed:", error);
     res.status(503).json({
       success: false,
       message: "API en ligne mais base de données inaccessible",
-      database: "disconnected",
+      data: { database: "disconnected" },
     });
   }
 });
+
 app.use("/api/requests", requestsRouter);
 app.use("/api/admin/auth", adminAuthRouter);
 app.use("/api/admin/demandes", adminDemandesRouter);
@@ -65,8 +65,6 @@ app.use("/api/admin/requests", adminRequestsRouter);
 app.use("/api/logs", logsRouter);
 app.use("/api/admin/logs", adminLogsRouter);
 app.use("/api/admin/audit", adminAuditRouter);
-/** TEMPORAIRE — diagnostic login admin (supprimer après confirmation) */
-app.use("/api/admin/debug", adminDebugRouter);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({

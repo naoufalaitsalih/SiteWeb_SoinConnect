@@ -1,8 +1,12 @@
-import type { AuditLog, AuditListResponse } from "@/lib/admin-audit-types";
-import { adminFetch } from "@/lib/admin-fetch";
+import type { AuditLog } from "@/lib/admin-audit-types";
+import { adminApiRequest } from "@/lib/api";
 import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
 
-const PROXY_BASE = "/api/admin/audit";
+type AuditListData = {
+  items?: AuditLog[];
+  data?: AuditLog[];
+  total?: number;
+};
 
 export async function fetchAuditLogs(params: {
   startDate?: string;
@@ -19,23 +23,30 @@ export async function fetchAuditLogs(params: {
   if (params.limit) search.set("limit", String(params.limit));
 
   try {
-    const res = await adminFetch(`${PROXY_BASE}?${search.toString()}`, {
-      cache: "no-store",
-    });
+    const query = search.toString();
+    const result = await adminApiRequest<AuditListData | AuditLog[]>(
+      `/api/admin/audit${query ? `?${query}` : ""}`,
+      { cache: "no-store" }
+    );
 
-    const data = (await res.json()) as AuditListResponse;
-
-    if (!res.ok || !data.success) {
+    if (!result.success) {
       return {
         logs: [],
         total: 0,
-        error: data.message ?? "Erreur de chargement de l'audit",
+        error: result.message ?? "Erreur de chargement de l'audit",
       };
     }
 
+    if (Array.isArray(result.data)) {
+      return { logs: result.data, total: result.data.length };
+    }
+
+    const payload = result.data as AuditListData | undefined;
+    const logs = payload?.items ?? payload?.data ?? [];
+
     return {
-      logs: data.data ?? [],
-      total: data.total ?? 0,
+      logs,
+      total: payload?.total ?? logs.length,
     };
   } catch {
     return {

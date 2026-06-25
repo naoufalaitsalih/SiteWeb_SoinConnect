@@ -55,8 +55,11 @@ export async function getCareRequests(
 
     res.status(200).json({
       success: true,
-      data: requests,
-      count: requests.length,
+      message: "Demandes récupérées",
+      data: {
+        items: requests,
+        count: requests.length,
+      },
     });
   } catch (error) {
     next(error);

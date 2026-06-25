@@ -1,4 +1,4 @@
-import { adminFetch } from "@/lib/admin-fetch";
+import { adminApiRequest } from "@/lib/api";
 import type { Demande, DemandeStatus } from "@/lib/admin-types";
 import { API_UNAVAILABLE_MESSAGE } from "@/lib/env";
 
@@ -36,8 +36,7 @@ export type ApiDemandeResponse = {
   data?: ApiDemande;
 };
 
-/** Proxy same-origin (cookie admin) — forwards to backend via Next.js API routes */
-const PROXY_BASE = "/api/admin/demandes";
+const API_BASE = "/api/admin/demandes";
 
 export function mapApiStatusToUi(status: ApiDemandeStatus): DemandeStatus {
   switch (status) {
@@ -100,42 +99,19 @@ export async function fetchAdminDemandes(): Promise<{
   error?: string;
 }> {
   try {
-    const res = await adminFetch(PROXY_BASE, {
+    const result = await adminApiRequest<ApiDemande[]>(API_BASE, {
       cache: "no-store",
     });
 
-    const data = await parseJson<ApiListResponse>(res);
-
-    if (!data) {
+    if (!result.success) {
       return {
         demandes: [],
-        error: res.ok
-          ? "Erreur de chargement des demandes"
-          : API_UNAVAILABLE_MESSAGE,
+        error: result.message ?? "Erreur de chargement des demandes",
       };
     }
 
-    if (!res.ok || !data.success) {
-      if (res.status === 503 || res.status >= 500) {
-        return {
-          demandes: [],
-          error: data.message ?? "Erreur de chargement des demandes",
-        };
-      }
-      return {
-        demandes: [],
-        error: data.message ?? "Erreur de chargement des demandes",
-      };
-    }
-
-    if (!Array.isArray(data.data)) {
-      return {
-        demandes: [],
-        error: "Erreur de chargement des demandes",
-      };
-    }
-
-    return { demandes: data.data.map(mapApiDemandeToUi) };
+    const items = Array.isArray(result.data) ? result.data : [];
+    return { demandes: items.map(mapApiDemandeToUi) };
   } catch {
     return {
       demandes: [],
@@ -150,17 +126,15 @@ export async function updateDemandeStatus(
   status: ApiDemandeStatus
 ): Promise<ApiDemandeResponse> {
   try {
-    const res = await adminFetch(`${PROXY_BASE}/${id}/status`, {
+    const result = await adminApiRequest<ApiDemande>(`${API_BASE}/${id}/status`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
     return (
-      (await parseJson<ApiDemandeResponse>(res)) ?? {
-        success: false,
-        message: "Erreur de chargement des demandes",
-      }
-    );
+      result.success
+        ? { success: true, data: result.data }
+        : { success: false, message: result.message ?? "Erreur" }
+    ) as ApiDemandeResponse;
   } catch {
     return {
       success: false,
@@ -175,17 +149,15 @@ export async function saveDemandeNotes(
   adminNotes: string
 ): Promise<ApiDemandeResponse> {
   try {
-    const res = await adminFetch(`${PROXY_BASE}/${id}/notes`, {
+    const result = await adminApiRequest<ApiDemande>(`${API_BASE}/${id}/notes`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ admin_notes: adminNotes.trim() || "" }),
     });
     return (
-      (await parseJson<ApiDemandeResponse>(res)) ?? {
-        success: false,
-        message: "Erreur de chargement des demandes",
-      }
-    );
+      result.success
+        ? { success: true, data: result.data }
+        : { success: false, message: result.message ?? "Erreur" }
+    ) as ApiDemandeResponse;
   } catch {
     return {
       success: false,
@@ -197,15 +169,14 @@ export async function saveDemandeNotes(
 
 export async function deleteDemande(id: number): Promise<ApiDemandeResponse> {
   try {
-    const res = await adminFetch(`${PROXY_BASE}/${id}`, {
+    const result = await adminApiRequest<ApiDemande>(`${API_BASE}/${id}`, {
       method: "DELETE",
     });
     return (
-      (await parseJson<ApiDemandeResponse>(res)) ?? {
-        success: false,
-        message: "Erreur de chargement des demandes",
-      }
-    );
+      result.success
+        ? { success: true, data: result.data }
+        : { success: false, message: result.message ?? "Erreur" }
+    ) as ApiDemandeResponse;
   } catch {
     return {
       success: false,

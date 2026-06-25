@@ -1,47 +1,10 @@
-import { adminFetch } from "@/lib/admin-fetch";
-
-export type EventLogEntry = {
-  id: number;
-  eventType: string;
-  pageUrl: string | null;
-  elementName: string | null;
-  userRole: string;
-  sessionId: string | null;
-  ipAddress: string | null;
-  userAgent: string | null;
-  browser: string | null;
-  os: string | null;
-  deviceType: string | null;
-  referrer: string | null;
-  locale: string | null;
-  country: string | null;
-  city: string | null;
-  timezone: string | null;
-  metadata: Record<string, unknown> | null;
-  createdAt: string;
-};
+export type { EventLogEntry } from "@/lib/api";
 
 export type LogsFilterParams = {
   startDate?: string;
   endDate?: string;
   page?: number;
   limit?: number;
-};
-
-export type ApiEventLogsResponse = {
-  success: boolean;
-  message?: string;
-  data?: EventLogEntry[];
-  count?: number;
-  total?: number;
-  page?: number;
-  limit?: number;
-};
-
-export type ApiDeleteLogsResponse = {
-  success: boolean;
-  message?: string;
-  count?: number;
 };
 
 export const EVENT_TYPE_LABELS: Record<string, string> = {
@@ -55,73 +18,49 @@ export const EVENT_TYPE_LABELS: Record<string, string> = {
   api_error: "Erreur API",
 };
 
-function buildQueryString(params: LogsFilterParams): string {
-  const search = new URLSearchParams();
-  if (params.startDate) search.set("startDate", params.startDate);
-  if (params.endDate) search.set("endDate", params.endDate);
-  if (params.page) search.set("page", String(params.page));
-  if (params.limit) search.set("limit", String(params.limit));
-  const qs = search.toString();
-  return qs ? `?${qs}` : "";
-}
-
 export async function fetchAdminEventLogs(
   params: LogsFilterParams = {}
-): Promise<{ logs: EventLogEntry[]; total: number; page: number; limit: number }> {
-  const res = await adminFetch(`/api/admin/logs${buildQueryString(params)}`, {
-    method: "GET",
-    cache: "no-store",
-  });
+): Promise<{ logs: import("@/lib/api").EventLogEntry[]; total: number; page: number; limit: number }> {
+  const { getAdminLogs } = await import("@/lib/api");
+  const result = await getAdminLogs(params);
 
-  const data = (await res.json()) as ApiEventLogsResponse;
-
-  if (!res.ok || !data.success || !data.data) {
-    throw new Error(data.message ?? "Impossible de charger les journaux");
+  if (!result.success || !result.data) {
+    throw new Error(result.message ?? "Impossible de charger les journaux");
   }
 
   return {
-    logs: data.data,
-    total: data.total ?? data.data.length,
-    page: data.page ?? 1,
-    limit: data.limit ?? 50,
+    logs: result.data.items,
+    total: result.data.total,
+    page: result.data.page,
+    limit: result.data.limit,
   };
 }
 
 export async function deleteAdminEventLogs(ids: number[]): Promise<number> {
-  const res = await adminFetch("/api/admin/logs", {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ids }),
-  });
+  const { deleteAdminLogs } = await import("@/lib/api");
+  const result = await deleteAdminLogs(ids);
 
-  const data = (await res.json()) as ApiDeleteLogsResponse;
-
-  if (!res.ok || !data.success) {
-    throw new Error(data.message ?? "Suppression impossible");
+  if (!result.success) {
+    throw new Error(result.message ?? "Suppression impossible");
   }
 
-  return data.count ?? 0;
+  return result.data?.count ?? 0;
 }
 
 export async function clearAdminEventLogs(
   filters: Pick<LogsFilterParams, "startDate" | "endDate"> = {}
 ): Promise<number> {
-  const res = await adminFetch("/api/admin/logs/clear", {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(filters),
-  });
+  const { clearAdminLogs } = await import("@/lib/api");
+  const result = await clearAdminLogs(filters);
 
-  const data = (await res.json()) as ApiDeleteLogsResponse;
-
-  if (!res.ok || !data.success) {
-    throw new Error(data.message ?? "Suppression impossible");
+  if (!result.success) {
+    throw new Error(result.message ?? "Suppression impossible");
   }
 
-  return data.count ?? 0;
+  return result.data?.count ?? 0;
 }
 
-export function formatEventLocation(log: EventLogEntry): string {
+export function formatEventLocation(log: import("@/lib/api").EventLogEntry): string {
   const parts = [log.city, log.country].filter(Boolean);
   return parts.length > 0 ? parts.join(", ") : "—";
 }

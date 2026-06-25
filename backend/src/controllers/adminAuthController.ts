@@ -115,8 +115,11 @@ export async function postAdminLogin(req: Request, res: Response) {
 
     return res.json({
       success: true,
-      token: result.token,
-      admin: result.admin,
+      message: "Connexion réussie",
+      data: {
+        token: result.token,
+        admin: result.admin,
+      },
     });
   } catch (error) {
     console.error("[admin/auth/login]", error);
@@ -142,5 +145,8 @@ export async function postAdminLogout(req: AdminRequest, res: Response) {
     resource: "admin_auth",
   });
 
-  return res.json({ success: true });
+  return res.json({
+    success: true,
+    message: "Déconnexion réussie",
+  });
 }

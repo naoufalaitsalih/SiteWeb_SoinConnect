@@ -11,13 +11,16 @@ async function main() {
   const email = normalizeAdminEmail(OFFICIAL_ADMIN.email);
   const hashedPassword = await bcrypt.hash(OFFICIAL_ADMIN.password, 12);
 
-  await prisma.$executeRaw`
-    DELETE FROM "admins"
-    WHERE LOWER("email") = LOWER(${email})
-  `;
-
-  const admin = await prisma.admin.create({
-    data: {
+  const admin = await prisma.admin.upsert({
+    where: { email },
+    update: {
+      firstName: OFFICIAL_ADMIN.firstName,
+      lastName: OFFICIAL_ADMIN.lastName,
+      password: hashedPassword,
+      role: "super_admin",
+      isActive: true,
+    },
+    create: {
       email,
       firstName: OFFICIAL_ADMIN.firstName,
       lastName: OFFICIAL_ADMIN.lastName,
@@ -33,7 +36,7 @@ async function main() {
   );
 
   console.log(
-    `[seed] Admin réinitialisé: ${admin.email} (id=${admin.id}, role=${admin.role}, isActive=${admin.isActive}, bcryptOk=${passwordOk})`
+    `[seed] Admin upsert: ${admin.email} (id=${admin.id}, role=${admin.role}, isActive=${admin.isActive}, bcryptOk=${passwordOk})`
   );
 }
 

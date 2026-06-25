@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { adminLogin, saveAdminSession } from "@/lib/api";
 import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 
 const REMEMBER_KEY = "soinsconnect_admin_email";
@@ -29,24 +30,17 @@ export default function AdminLoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const result = await adminLogin(email.trim(), password);
 
-      const data = await res.json();
-
-      if (!res.ok || data.success !== true) {
-        setError(
-          typeof data.message === "string" ? data.message : "Connexion impossible"
-        );
+      if (!result.success || !result.data?.token || !result.data?.admin) {
+        setError(result.message ?? "Connexion impossible");
         return;
       }
 
+      saveAdminSession(result.data.token, result.data.admin);
+
       if (remember) {
-        localStorage.setItem(REMEMBER_KEY, email);
+        localStorage.setItem(REMEMBER_KEY, email.trim());
       } else {
         localStorage.removeItem(REMEMBER_KEY);
       }
@@ -54,7 +48,9 @@ export default function AdminLoginForm() {
       router.replace("/admin/dashboard");
     } catch (err) {
       console.error("[admin/login]", err);
-      setError("Erreur réseau. Réessayez.");
+      setError(
+        err instanceof Error ? err.message : "Erreur réseau. Réessayez."
+      );
     } finally {
       setLoading(false);
     }

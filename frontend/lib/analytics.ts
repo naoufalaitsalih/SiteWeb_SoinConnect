@@ -199,21 +199,8 @@ export async function trackEvent(
 
 
   try {
-
-    await fetch("/api/logs", {
-
-      method: "POST",
-
-      headers: { "Content-Type": "application/json" },
-
-      body: JSON.stringify(buildPayload(eventType, extra)),
-
-      keepalive: true,
-
-      credentials: "same-origin",
-
-    });
-
+    const { createLog } = await import("@/lib/api");
+    await createLog(buildPayload(eventType, extra));
   } catch {
 
     // Analytics silencieux — ne pas perturber l'UX
