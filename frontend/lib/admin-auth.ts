@@ -4,11 +4,13 @@ function getJwtSecretKey(): Uint8Array {
   const secret = process.env.JWT_SECRET?.trim();
   if (!secret) {
     throw new Error(
-      "JWT_SECRET manquant. Définissez une clé forte (min. 32 caractères) dans .env.local"
+      "JWT_SECRET manquant. Définissez JWT_SECRET dans .env.local (identique au backend)"
     );
   }
   if (process.env.NODE_ENV === "production" && secret.length < 32) {
-    throw new Error("JWT_SECRET doit contenir au moins 32 caractères en production");
+    console.warn(
+      "[admin-auth] JWT_SECRET < 32 caractères en production — doit correspondre exactement au backend"
+    );
   }
   return new TextEncoder().encode(secret);
 }

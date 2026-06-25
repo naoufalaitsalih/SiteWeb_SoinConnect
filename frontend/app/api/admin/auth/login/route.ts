@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ADMIN_COOKIE } from "@/lib/admin-auth";
 import { serverApiUrl } from "@/lib/api-base";
 import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
+
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 10;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -18,6 +19,11 @@ function checkRateLimit(ip: string): boolean {
   if (entry.count >= MAX_ATTEMPTS) return false;
   entry.count += 1;
   return true;
+}
+
+function maskToken(value: unknown): string {
+  if (typeof value !== "string" || value.length === 0) return "[missing]";
+  return `[present:${value.length} chars]`;
 }
 
 export async function POST(request: NextRequest) {
@@ -57,6 +63,18 @@ export async function POST(request: NextRequest) {
 
     const data = await backendRes.json();
 
+    console.log("LOGIN RESPONSE", {
+      status: backendRes.status,
+      ok: backendRes.ok,
+      url: backendUrl,
+    });
+    console.log("LOGIN DATA", {
+      success: data?.success,
+      message: data?.message,
+      token: maskToken(data?.token),
+      admin: data?.admin ?? data?.user ?? null,
+    });
+
     if (!backendRes.ok) {
       console.warn("[admin/login proxy] échec backend", {
         url: backendUrl,
@@ -66,9 +84,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(data, { status: backendRes.status });
     }
 
+    if (data?.success !== true) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: data?.message ?? "LOGIN_BACKEND_SUCCESS_FALSE",
+        },
+        { status: 502 }
+      );
+    }
+
+    if (typeof data?.token !== "string" || data.token.length === 0) {
+      console.error("[admin/login proxy] TOKEN manquant dans la réponse backend");
+      return NextResponse.json(
+        {
+          success: false,
+          message: "TOKEN_MISSING_FROM_BACKEND",
+        },
+        { status: 502 }
+      );
+    }
+
+    const admin = data.admin ?? data.user;
+    if (!admin || typeof admin !== "object") {
+      console.error("[admin/login proxy] admin/user manquant dans la réponse backend");
+      return NextResponse.json(
+        {
+          success: false,
+          message: "ADMIN_PROFILE_MISSING_FROM_BACKEND",
+        },
+        { status: 502 }
+      );
+    }
+
+    console.log("TOKEN", maskToken(data.token));
+    console.log("[admin/login proxy] cookie httpOnly", ADMIN_COOKIE, "sera défini");
+
     const response = NextResponse.json({
       success: true,
-      admin: data.admin,
+      admin,
+      tokenSet: true,
     });
 
     response.cookies.set(ADMIN_COOKIE, data.token, {

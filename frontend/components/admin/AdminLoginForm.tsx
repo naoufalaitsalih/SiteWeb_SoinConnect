@@ -40,8 +40,30 @@ export default function AdminLoginForm() {
 
       const data = await res.json();
 
-      if (!res.ok || !data.success) {
+      console.log("LOGIN RESPONSE", {
+        status: res.status,
+        ok: res.ok,
+        statusText: res.statusText,
+      });
+      console.log("LOGIN DATA", data);
+      console.log(
+        "TOKEN",
+        data.token ?? "(httpOnly cookie admin_token — non exposé au client)"
+      );
+      console.log("ADMIN PROFILE", data.admin ?? data.user ?? null);
+
+      if (!res.ok) {
         setError(data.message ?? "Connexion impossible");
+        return;
+      }
+
+      if (data.success !== true) {
+        setError(data.message ?? "Connexion impossible");
+        return;
+      }
+
+      if (!data.tokenSet && !data.token) {
+        setError("Session non initialisée (cookie admin_token manquant)");
         return;
       }
 
@@ -52,6 +74,7 @@ export default function AdminLoginForm() {
       }
 
       const from = sanitizeAdminRedirect(searchParams.get("from"));
+      console.log("REDIRECT TO DASHBOARD", from);
       window.location.assign(from);
     } catch {
       setError("Erreur réseau. Réessayez.");
