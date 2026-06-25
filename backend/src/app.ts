@@ -8,6 +8,7 @@ import adminRequestsRouter from "./routes/adminRequests";
 import logsRouter from "./routes/logs";
 import adminLogsRouter from "./routes/adminLogs";
 import adminAuditRouter from "./routes/adminAudit";
+import adminDebugRouter from "./routes/adminDebug";
 import { globalApiLimiter } from "./middleware/rateLimiters";
 import { prisma } from "./prisma/client";
 const app = express();
@@ -62,6 +63,8 @@ app.use("/api/admin/requests", adminRequestsRouter);
 app.use("/api/logs", logsRouter);
 app.use("/api/admin/logs", adminLogsRouter);
 app.use("/api/admin/audit", adminAuditRouter);
+/** TEMPORAIRE — diagnostic login admin (supprimer après confirmation) */
+app.use("/api/admin/debug", adminDebugRouter);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({
