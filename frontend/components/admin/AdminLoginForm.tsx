@@ -27,67 +27,23 @@ export default function AdminLoginForm() {
     event.preventDefault();
     setError("");
     setLoading(true);
-    console.log("STEP 1 - Début login");
 
     try {
-      const res = await fetch("/api/admin/auth/login", {
+      const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
-      console.log("STEP 2 - Réponse reçue", {
-        status: res.status,
-        ok: res.ok,
-        statusText: res.statusText,
-      });
+      const data = await res.json();
 
-      const rawBody = await res.text();
-      let data: Record<string, unknown>;
-
-      try {
-        data = rawBody ? (JSON.parse(rawBody) as Record<string, unknown>) : {};
-      } catch (parseError) {
-        console.error("STEP 3 - Erreur parsing JSON", parseError, rawBody);
-        setError("Réponse serveur invalide (JSON)");
-        return;
-      }
-
-      console.log("STEP 3 - JSON reçu", data);
-
-      if (!res.ok) {
+      if (!res.ok || data.success !== true) {
         setError(
           typeof data.message === "string" ? data.message : "Connexion impossible"
         );
         return;
       }
-
-      if (data.success !== true) {
-        setError(
-          typeof data.message === "string" ? data.message : "Connexion impossible"
-        );
-        return;
-      }
-
-      const token = data.token;
-      const admin = data.admin ?? data.user;
-
-      if (typeof token !== "string" || token.length === 0) {
-        setError("TOKEN_MISSING_FROM_PROXY");
-        return;
-      }
-
-      if (!admin || typeof admin !== "object") {
-        setError("ADMIN_PROFILE_MISSING_FROM_PROXY");
-        return;
-      }
-
-      console.log("STEP 4 - Sauvegarde token");
-      localStorage.setItem("admin_token", token);
-
-      console.log("STEP 5 - Sauvegarde admin");
-      localStorage.setItem("admin", JSON.stringify(admin));
 
       if (remember) {
         localStorage.setItem(REMEMBER_KEY, email);
@@ -95,15 +51,10 @@ export default function AdminLoginForm() {
         localStorage.removeItem(REMEMBER_KEY);
       }
 
-      console.log("STEP 6 - Avant redirection");
       router.replace("/admin/dashboard");
-      router.refresh();
-      console.log("STEP 7 - Après redirection");
-    } catch (error) {
-      console.error("STEP ERROR - Exception capturée", error);
-      setError(
-        error instanceof Error ? error.message : "Erreur réseau. Réessayez."
-      );
+    } catch (err) {
+      console.error("[admin/login]", err);
+      setError("Erreur réseau. Réessayez.");
     } finally {
       setLoading(false);
     }

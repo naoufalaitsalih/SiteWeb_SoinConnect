@@ -1,10 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
-import {
-  isAdminPublicPath,
-  isValidAdminToken,
-} from "./lib/admin-auth";
+import { isAdminPublicPath } from "./lib/admin-auth";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -14,6 +11,10 @@ function resolveAdminPath(pathname: string): string | null {
   const match = pathname.match(LOCALE_ADMIN_PATTERN);
   if (!match) return null;
   return match[2] || "/dashboard";
+}
+
+function hasAdminCookie(request: NextRequest): boolean {
+  return Boolean(request.cookies.get("admin_token")?.value);
 }
 
 export default async function middleware(request: NextRequest) {
@@ -27,24 +28,17 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin")) {
-    const token = request.cookies.get("admin_token")?.value;
-    const cookieFound = Boolean(token);
+    const cookieFound = hasAdminCookie(request);
 
     console.log("[middleware/admin] path:", pathname);
-    console.log("COOKIE ADMIN TOKEN FOUND", cookieFound);
-
-    const isAuthenticated = cookieFound
-      ? await isValidAdminToken(token!)
-      : false;
-
-    console.log("[middleware/admin] JWT VALID:", isAuthenticated);
+    console.log("MIDDLEWARE COOKIE FOUND", cookieFound);
 
     const isPublic = isAdminPublicPath(pathname);
 
     if (pathname === "/admin") {
       return NextResponse.redirect(
         new URL(
-          isAuthenticated ? "/admin/dashboard" : "/admin/login",
+          cookieFound ? "/admin/dashboard" : "/admin/login",
           request.url
         )
       );
@@ -62,14 +56,13 @@ export default async function middleware(request: NextRequest) {
       );
     }
 
-    if (!isPublic && !isAuthenticated) {
-      console.log("[middleware/admin] REDIRECT → /admin/login (route protégée)");
+    if (!isPublic && !cookieFound) {
       const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    if (isPublic && isAuthenticated) {
+    if (isPublic && cookieFound) {
       return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
 
