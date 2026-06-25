@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Prisma } from "@prisma/client";
 import type { AdminRequest } from "../middleware/adminAuthMiddleware";
 import { adminLoginSchema } from "../validators/adminAuthValidator";
 import { authenticateAdmin } from "../services/adminAuthService";
@@ -6,13 +7,12 @@ import { createAuditLog } from "../services/auditService";
 import { getClientIp } from "../utils/clientIp";
 
 function mapLoginError(error: unknown): { status: number; message: string } {
-  if (error instanceof Error) {
-    if (error.message.includes("JWT_SECRET")) {
-      return { status: 503, message: error.message };
-    }
-    if (error.message.includes("Table admins absente")) {
-      return { status: 503, message: error.message };
-    }
+  if (error instanceof Error && error.message.includes("JWT_SECRET")) {
+    return { status: 500, message: "JWT_SECRET_MISSING" };
+  }
+
+  if (error instanceof Prisma.PrismaClientInitializationError) {
+    return { status: 500, message: "DATABASE_CONNECTION_ERROR" };
   }
 
   const prismaCode =
@@ -24,29 +24,22 @@ function mapLoginError(error: unknown): { status: number; message: string } {
     case "P1000":
     case "P1001":
     case "P1003":
-      return {
-        status: 503,
-        message:
-          "Base de données inaccessible. Vérifiez DATABASE_URL dans backend/.env",
-      };
+    case "P1017":
+      return { status: 500, message: "DATABASE_CONNECTION_ERROR" };
     case "P2021":
       return {
-        status: 503,
-        message:
-          "Table admins absente. Exécutez: npx prisma migrate deploy && npx prisma db seed",
+        status: 500,
+        message: "DATABASE_CONNECTION_ERROR",
       };
     case "P2022":
       return {
-        status: 503,
-        message: "Schéma base de données incomplet. Exécutez: npx prisma migrate deploy",
+        status: 500,
+        message: "DATABASE_CONNECTION_ERROR",
       };
     default:
       return {
-        status: 503,
-        message:
-          process.env.NODE_ENV === "production"
-            ? "Service temporairement indisponible"
-            : "Erreur serveur lors de la connexion admin",
+        status: 500,
+        message: "DATABASE_CONNECTION_ERROR",
       };
   }
 }
@@ -71,18 +64,16 @@ export async function postAdminLogin(req: Request, res: Response) {
   }
 
   try {
-    console.log("[admin/auth/login] tentative", {
-      email: parsed.data.email.trim().toLowerCase(),
-    });
-
     const result = await authenticateAdmin(parsed.data);
 
     if (!result.success) {
       console.warn("[admin/auth/login] refusé", {
         email: parsed.data.email.trim().toLowerCase(),
-        reason: "reason" in result ? result.reason : "unknown",
         status: result.status,
+        message: result.message,
+        reason: result.reason,
       });
+
       await createAuditLog({
         action: "login_failed",
         userEmail: parsed.data.email.toLowerCase(),

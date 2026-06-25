@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt, { type SignOptions } from "jsonwebtoken";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../prisma/client";
 import type { AdminLoginInput } from "../validators/adminAuthValidator";
 import { OFFICIAL_ADMIN, normalizeAdminEmail } from "../config/officialAdmin";
@@ -12,43 +13,101 @@ export type AdminTokenPayload = {
   role: string;
 };
 
+export type AdminAuthErrorCode =
+  | "ADMIN_NOT_FOUND"
+  | "ADMIN_DISABLED"
+  | "INVALID_PASSWORD"
+  | "JWT_SECRET_MISSING"
+  | "DATABASE_CONNECTION_ERROR";
+
 export type AdminAuthFailureReason =
   | "admin_not_found"
   | "admin_inactive"
   | "password_mismatch"
-  | "invalid_bcrypt_hash"
-  | "jwt_error";
+  | "jwt_error"
+  | "database_error";
 
 const JWT_ALGORITHM = "HS256" as const;
-const LOG_PREFIX = "[auth/login]";
 
-function authLog(message: string, details?: Record<string, unknown>) {
-  if (details) {
-    console.log(LOG_PREFIX, message, details);
-  } else {
-    console.log(LOG_PREFIX, message);
+function isDatabaseConnectionError(error: unknown): boolean {
+  if (error instanceof Prisma.PrismaClientInitializationError) {
+    return true;
   }
-}
-
-function getJwtSecret(): string {
-  const secret = process.env.JWT_SECRET?.trim();
-  if (!secret) {
-    throw new Error("JWT_SECRET manquant dans backend/.env");
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    return ["P1000", "P1001", "P1003", "P1017"].includes(error.code);
   }
-  if (process.env.NODE_ENV === "production" && secret.length < 32) {
-    console.warn(
-      "[auth/login] JWT_SECRET < 32 caractères en production — recommandé d'utiliser une clé plus longue"
-    );
-  }
-  return secret;
+  return false;
 }
 
 function getJwtExpiresIn(): string {
   return process.env.JWT_EXPIRES_IN?.trim() || "8h";
 }
 
+function failureResponse(
+  reason: AdminAuthFailureReason
+): { success: false; status: number; message: AdminAuthErrorCode; reason: AdminAuthFailureReason } {
+  switch (reason) {
+    case "admin_not_found":
+      return {
+        success: false,
+        status: 404,
+        message: "ADMIN_NOT_FOUND",
+        reason,
+      };
+    case "admin_inactive":
+      return {
+        success: false,
+        status: 403,
+        message: "ADMIN_DISABLED",
+        reason,
+      };
+    case "password_mismatch":
+      return {
+        success: false,
+        status: 401,
+        message: "INVALID_PASSWORD",
+        reason,
+      };
+    case "jwt_error":
+      return {
+        success: false,
+        status: 500,
+        message: "JWT_SECRET_MISSING",
+        reason,
+      };
+    case "database_error":
+      return {
+        success: false,
+        status: 500,
+        message: "DATABASE_CONNECTION_ERROR",
+        reason,
+      };
+    default:
+      return {
+        success: false,
+        status: 500,
+        message: "DATABASE_CONNECTION_ERROR",
+        reason: "database_error",
+      };
+  }
+}
+
 async function findAdminByEmail(email: string) {
   return prisma.admin.findUnique({ where: { email } });
+}
+
+function logAuthDiagnostics(
+  email: string,
+  admin: Awaited<ReturnType<typeof findAdminByEmail>>,
+  passwordMatch?: boolean
+) {
+  console.log("EMAIL =", email);
+  console.log("ADMIN =", admin ? admin.email : "NOT FOUND");
+  console.log("ACTIVE =", admin?.isActive);
+  console.log("ROLE =", admin?.role);
+  if (passwordMatch !== undefined) {
+    console.log("PASSWORD MATCH =", passwordMatch);
+  }
 }
 
 async function attemptLogin(
@@ -58,60 +117,41 @@ async function attemptLogin(
   | {
       success: true;
       admin: NonNullable<Awaited<ReturnType<typeof findAdminByEmail>>>;
-      passwordMatch: boolean;
-      jwtGenerated: boolean;
-      token?: string;
+      token: string;
     }
   | {
       success: false;
       reason: AdminAuthFailureReason;
-      admin: Awaited<ReturnType<typeof findAdminByEmail>>;
-      passwordMatch: boolean;
-      jwtGenerated: boolean;
     }
 > {
-  const admin = await findAdminByEmail(email);
+  let admin: Awaited<ReturnType<typeof findAdminByEmail>>;
 
-  authLog("ADMIN TROUVÉ", { value: admin ? "oui" : "non" });
-
-  if (!admin) {
-    authLog("Aucun admin trouvé pour cet email", { email });
-    return {
-      success: false,
-      reason: "admin_not_found",
-      admin: null,
-      passwordMatch: false,
-      jwtGenerated: false,
-    };
+  try {
+    admin = await findAdminByEmail(email);
+  } catch (error) {
+    console.error("[auth/login] Erreur base de données:", error);
+    return { success: false, reason: "database_error" };
   }
 
-  authLog("ID", { id: admin.id });
-  authLog("ROLE", { role: admin.role });
-  authLog("IS ACTIVE", { isActive: admin.isActive });
-
-  if (!admin.isActive) {
-    authLog("Compte désactivé", { id: admin.id });
-    return {
-      success: false,
-      reason: "admin_inactive",
-      admin,
-      passwordMatch: false,
-      jwtGenerated: false,
-    };
+  if (!admin) {
+    logAuthDiagnostics(email, null);
+    return { success: false, reason: "admin_not_found" };
   }
 
   const passwordMatch = await bcrypt.compare(input.password, admin.password);
-  authLog("bcrypt.compare", { result: passwordMatch });
+  logAuthDiagnostics(email, admin, passwordMatch);
+
+  if (!admin.isActive) {
+    return { success: false, reason: "admin_inactive" };
+  }
 
   if (!passwordMatch) {
-    authLog("Hash du mot de passe invalide", { id: admin.id });
-    return {
-      success: false,
-      reason: "password_mismatch",
-      admin,
-      passwordMatch: false,
-      jwtGenerated: false,
-    };
+    return { success: false, reason: "password_mismatch" };
+  }
+
+  const secret = process.env.JWT_SECRET?.trim();
+  if (!secret) {
+    return { success: false, reason: "jwt_error" };
   }
 
   try {
@@ -124,18 +164,11 @@ async function attemptLogin(
       expiresIn: getJwtExpiresIn() as SignOptions["expiresIn"],
       algorithm: JWT_ALGORITHM,
     };
-    const token = jwt.sign(payload, getJwtSecret(), signOptions);
-    authLog("JWT généré", { value: "oui", tokenLength: token.length });
-    return { success: true, admin, passwordMatch: true, jwtGenerated: true, token };
+    const token = jwt.sign(payload, secret, signOptions);
+    return { success: true, admin, token };
   } catch (error) {
-    authLog("JWT généré", { value: "non", error: String(error) });
-    return {
-      success: false,
-      reason: "jwt_error",
-      admin,
-      passwordMatch: true,
-      jwtGenerated: false,
-    };
+    console.error("[auth/login] Erreur JWT:", error);
+    return { success: false, reason: "jwt_error" };
   }
 }
 
@@ -143,41 +176,57 @@ export async function authenticateAdmin(input: AdminLoginInput) {
   const email = normalizeAdminEmail(input.email);
   const dbInfo = parseDatabaseInfo(process.env.DATABASE_URL);
 
-  authLog("EMAIL REÇU", { email });
-  authLog("DATABASE", {
+  console.log("[auth/login] DATABASE =", {
     host: dbInfo.host,
     database: dbInfo.database,
     schema: dbInfo.schema,
     url: maskDatabaseUrl(process.env.DATABASE_URL),
   });
 
+  if (!process.env.JWT_SECRET?.trim()) {
+    console.log("EMAIL =", email);
+    console.log("ADMIN =", "NOT CHECKED (JWT_SECRET_MISSING)");
+    return failureResponse("jwt_error");
+  }
+
   let result = await attemptLogin(input, email);
 
   const isOfficialEmail = email === normalizeAdminEmail(OFFICIAL_ADMIN.email);
-  if (!result.success && isOfficialEmail) {
-    authLog("Réparation auto admin officiel", { reason: result.reason });
-    await repairOfficialAdmin();
-    result = await attemptLogin(input, email);
+  if (
+    !result.success &&
+    isOfficialEmail &&
+    result.reason !== "database_error" &&
+    result.reason !== "jwt_error"
+  ) {
+    console.log("[auth/login] Réparation auto admin officiel:", result.reason);
+    try {
+      await repairOfficialAdmin();
+      result = await attemptLogin(input, email);
+    } catch (error) {
+      if (isDatabaseConnectionError(error)) {
+        return failureResponse("database_error");
+      }
+      throw error;
+    }
   }
 
   if (!result.success) {
-    return {
-      success: false as const,
-      status: result.reason === "jwt_error" ? 503 : 401,
-      message:
-        result.reason === "jwt_error"
-          ? "Erreur configuration JWT"
-          : "Identifiants invalides",
-      reason: result.reason,
-    };
+    return failureResponse(result.reason);
   }
 
-  await prisma.admin.update({
-    where: { id: result.admin.id },
-    data: { lastLogin: new Date() },
-  });
+  try {
+    await prisma.admin.update({
+      where: { id: result.admin.id },
+      data: { lastLogin: new Date() },
+    });
+  } catch (error) {
+    if (isDatabaseConnectionError(error)) {
+      return failureResponse("database_error");
+    }
+    throw error;
+  }
 
-  authLog("Authentification réussie", {
+  console.log("[auth/login] Authentification réussie", {
     id: result.admin.id,
     email: result.admin.email,
     role: result.admin.role,
@@ -185,7 +234,7 @@ export async function authenticateAdmin(input: AdminLoginInput) {
 
   return {
     success: true as const,
-    token: result.token!,
+    token: result.token,
     admin: {
       id: result.admin.id,
       email: result.admin.email,
@@ -197,8 +246,11 @@ export async function authenticateAdmin(input: AdminLoginInput) {
 }
 
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
+  const secret = process.env.JWT_SECRET?.trim();
+  if (!secret) return null;
+
   try {
-    return jwt.verify(token, getJwtSecret(), {
+    return jwt.verify(token, secret, {
       algorithms: [JWT_ALGORITHM],
     }) as AdminTokenPayload;
   } catch {
