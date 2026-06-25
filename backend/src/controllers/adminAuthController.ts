@@ -60,6 +60,9 @@ export async function postAdminLogin(req: Request, res: Response) {
       : undefined;
 
   if (!parsed.success) {
+    console.warn("[admin/auth/login] validation échouée", {
+      fields: Object.keys(parsed.error.flatten().fieldErrors),
+    });
     return res.status(400).json({
       success: false,
       message: "Données invalides",
@@ -68,9 +71,18 @@ export async function postAdminLogin(req: Request, res: Response) {
   }
 
   try {
+    console.log("[admin/auth/login] tentative", {
+      email: parsed.data.email.trim().toLowerCase(),
+    });
+
     const result = await authenticateAdmin(parsed.data);
 
     if (!result.success) {
+      console.warn("[admin/auth/login] refusé", {
+        email: parsed.data.email.trim().toLowerCase(),
+        reason: "reason" in result ? result.reason : "unknown",
+        status: result.status,
+      });
       await createAuditLog({
         action: "login_failed",
         userEmail: parsed.data.email.toLowerCase(),
@@ -94,6 +106,12 @@ export async function postAdminLogin(req: Request, res: Response) {
       ipAddress,
       userAgent,
       resource: "admin_auth",
+    });
+
+    console.log("[admin/auth/login] succès", {
+      id: result.admin.id,
+      email: result.admin.email,
+      role: result.admin.role,
     });
 
     return res.json({

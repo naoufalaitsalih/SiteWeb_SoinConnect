@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-import {
-  OFFICIAL_ADMIN,
-  normalizeAdminEmail,
-} from "../src/config/officialAdmin";
+import { prisma } from "./client";
+import { OFFICIAL_ADMIN, normalizeAdminEmail } from "../config/officialAdmin";
 
-const prisma = new PrismaClient();
-
-async function main() {
+/**
+ * Garantit que l'admin officiel existe avec le bon hash bcrypt.
+ * Corrige les déploiements où le seed n'a pas été exécuté ou où
+ * SEED_ADMIN_PASSWORD différait de Admin@2026.
+ */
+export async function ensureOfficialAdmin(): Promise<void> {
   const email = normalizeAdminEmail(OFFICIAL_ADMIN.email);
   const hashedPassword = await bcrypt.hash(OFFICIAL_ADMIN.password, 12);
 
@@ -36,15 +36,6 @@ async function main() {
   );
 
   console.log(
-    `Admin officiel OK: ${admin.email} (id=${admin.id}, role=${admin.role}, actif=${admin.isActive}, bcrypt=${passwordOk})`
+    `[admin] Officiel prêt: ${admin.email} (id=${admin.id}, role=${admin.role}, actif=${admin.isActive}, bcrypt=${passwordOk})`
   );
 }
-
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });

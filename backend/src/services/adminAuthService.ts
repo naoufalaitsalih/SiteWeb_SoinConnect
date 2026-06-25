@@ -2,6 +2,9 @@ import bcrypt from "bcrypt";
 import jwt, { type SignOptions } from "jsonwebtoken";
 import { prisma } from "../prisma/client";
 import type { AdminLoginInput } from "../validators/adminAuthValidator";
+import {
+  normalizeAdminEmail,
+} from "../config/officialAdmin";
 
 export type AdminTokenPayload = {
   id: number;
@@ -9,7 +12,21 @@ export type AdminTokenPayload = {
   role: string;
 };
 
+export type AdminAuthFailureReason =
+  | "admin_not_found"
+  | "admin_inactive"
+  | "password_mismatch"
+  | "invalid_bcrypt_hash";
+
 const JWT_ALGORITHM = "HS256" as const;
+const AUTH_DEBUG =
+  process.env.AUTH_DEBUG === "true" ||
+  process.env.NODE_ENV !== "production";
+
+function authLog(message: string, details?: Record<string, unknown>) {
+  if (!AUTH_DEBUG) return;
+  console.log("[auth/login]", message, details ?? "");
+}
 
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET?.trim();
@@ -26,26 +43,65 @@ function getJwtExpiresIn(): string {
   return process.env.JWT_EXPIRES_IN?.trim() || "8h";
 }
 
+function isValidBcryptHash(hash: string): boolean {
+  return /^\$2[aby]?\$\d{2}\$/.test(hash);
+}
+
 export async function authenticateAdmin(input: AdminLoginInput) {
+  const email = normalizeAdminEmail(input.email);
+  authLog("email reçu", { email });
+
   const admin = await prisma.admin.findUnique({
-    where: { email: input.email.toLowerCase() },
+    where: { email },
   });
 
-  if (!admin || !admin.isActive) {
+  if (!admin) {
+    authLog("échec", { reason: "admin_not_found", email });
     return {
       success: false as const,
       status: 401,
       message: "Identifiants invalides",
+      reason: "admin_not_found" as const,
+    };
+  }
+
+  authLog("admin trouvé", {
+    id: admin.id,
+    role: admin.role,
+    isActive: admin.isActive,
+    hashPrefix: admin.password.slice(0, 7),
+  });
+
+  if (!admin.isActive) {
+    authLog("échec", { reason: "admin_inactive", id: admin.id });
+    return {
+      success: false as const,
+      status: 401,
+      message: "Identifiants invalides",
+      reason: "admin_inactive" as const,
+    };
+  }
+
+  if (!isValidBcryptHash(admin.password)) {
+    authLog("échec", { reason: "invalid_bcrypt_hash", id: admin.id });
+    return {
+      success: false as const,
+      status: 401,
+      message: "Identifiants invalides",
+      reason: "invalid_bcrypt_hash" as const,
     };
   }
 
   const passwordMatch = await bcrypt.compare(input.password, admin.password);
+  authLog("bcrypt.compare", { result: passwordMatch, id: admin.id });
 
   if (!passwordMatch) {
+    authLog("échec", { reason: "password_mismatch", id: admin.id });
     return {
       success: false as const,
       status: 401,
       message: "Identifiants invalides",
+      reason: "password_mismatch" as const,
     };
   }
 
@@ -66,6 +122,11 @@ export async function authenticateAdmin(input: AdminLoginInput) {
   };
 
   const token = jwt.sign(payload, getJwtSecret(), signOptions);
+  authLog("succès JWT", {
+    id: admin.id,
+    role: admin.role,
+    tokenLength: token.length,
+  });
 
   return {
     success: true as const,

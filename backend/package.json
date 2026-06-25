@@ -13,7 +13,9 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
-    "check:api": "tsx scripts/check-api.ts"
+    "check:api": "tsx scripts/check-api.ts",
+    "verify:admin": "tsx scripts/verify-admin-login.ts",
+    "test:auth-crypto": "tsx scripts/test-auth-crypto.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

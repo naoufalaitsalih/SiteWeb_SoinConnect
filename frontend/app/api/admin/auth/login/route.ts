@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const backendRes = await fetch(serverApiUrl("/api/admin/auth/login"), {
+    const backendUrl = serverApiUrl("/api/admin/auth/login");
+    const backendRes = await fetch(backendUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -48,6 +49,11 @@ export async function POST(request: NextRequest) {
     const data = await backendRes.json();
 
     if (!backendRes.ok) {
+      console.warn("[admin/login proxy] échec backend", {
+        url: backendUrl,
+        status: backendRes.status,
+        message: data?.message,
+      });
       return NextResponse.json(data, { status: backendRes.status });
     }
 
