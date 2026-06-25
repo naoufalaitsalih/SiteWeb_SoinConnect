@@ -18,39 +18,23 @@ export type RepairResult = {
   email: string;
 };
 
-/** Supprime les doublons email (casse différente) et garde l'email canonique. */
-async function removeDuplicateAdmins(canonicalEmail: string): Promise<number> {
-  const deleted = await prisma.$executeRaw`
-    DELETE FROM "admins"
-    WHERE LOWER("email") = LOWER(${canonicalEmail})
-      AND "email" <> ${canonicalEmail}
-  `;
-  return Number(deleted);
-}
-
 /**
  * Crée ou réinitialise l'admin officiel dans la table `admins`.
- * Hash bcrypt de Admin@2026 — idempotent à chaque appel.
+ * Supprime toutes les variantes de casse puis recrée un enregistrement unique.
  */
 export async function repairOfficialAdmin(): Promise<RepairResult> {
   const email = normalizeAdminEmail(OFFICIAL_ADMIN.email);
   const hashedPassword = await bcrypt.hash(OFFICIAL_ADMIN.password, BCRYPT_ROUNDS);
 
-  const existing = await prisma.admin.findUnique({ where: { email } });
-  const created = !existing;
+  const deleted = await prisma.$executeRaw`
+    DELETE FROM "admins"
+    WHERE LOWER("email") = LOWER(${email})
+  `;
 
-  await removeDuplicateAdmins(email);
+  const hadExisting = Number(deleted) > 0;
 
-  const admin = await prisma.admin.upsert({
-    where: { email },
-    update: {
-      firstName: OFFICIAL_ADMIN.firstName,
-      lastName: OFFICIAL_ADMIN.lastName,
-      password: hashedPassword,
-      role: "super_admin",
-      isActive: true,
-    },
-    create: {
+  const admin = await prisma.admin.create({
+    data: {
       email,
       firstName: OFFICIAL_ADMIN.firstName,
       lastName: OFFICIAL_ADMIN.lastName,
@@ -63,8 +47,8 @@ export async function repairOfficialAdmin(): Promise<RepairResult> {
   const bcryptOk = await bcrypt.compare(OFFICIAL_ADMIN.password, admin.password);
 
   return {
-    created,
-    passwordReset: !created || !bcryptOk,
+    created: true,
+    passwordReset: hadExisting || !bcryptOk,
     bcryptOk,
     adminId: admin.id,
     email: admin.email,

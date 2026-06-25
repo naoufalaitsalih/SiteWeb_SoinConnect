@@ -48,17 +48,7 @@ function getJwtExpiresIn(): string {
 }
 
 async function findAdminByEmail(email: string) {
-  const exact = await prisma.admin.findUnique({ where: { email } });
-  if (exact) return exact;
-
-  return prisma.admin.findFirst({
-    where: {
-      email: {
-        equals: email,
-        mode: "insensitive",
-      },
-    },
-  });
+  return prisma.admin.findUnique({ where: { email } });
 }
 
 async function attemptLogin(

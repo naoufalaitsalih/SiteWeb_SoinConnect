@@ -14,19 +14,10 @@ async function main() {
   await prisma.$executeRaw`
     DELETE FROM "admins"
     WHERE LOWER("email") = LOWER(${email})
-      AND "email" <> ${email}
   `;
 
-  const admin = await prisma.admin.upsert({
-    where: { email },
-    update: {
-      firstName: OFFICIAL_ADMIN.firstName,
-      lastName: OFFICIAL_ADMIN.lastName,
-      password: hashedPassword,
-      role: "super_admin",
-      isActive: true,
-    },
-    create: {
+  const admin = await prisma.admin.create({
+    data: {
       email,
       firstName: OFFICIAL_ADMIN.firstName,
       lastName: OFFICIAL_ADMIN.lastName,

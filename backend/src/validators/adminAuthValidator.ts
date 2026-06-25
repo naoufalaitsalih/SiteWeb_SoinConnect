@@ -7,6 +7,7 @@ export const adminLoginSchema = z.object({
     .email("Email invalide"),
   password: z
     .string({ required_error: "Le mot de passe est requis" })
+    .trim()
     .min(1, "Le mot de passe est requis"),
 });
 
