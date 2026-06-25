@@ -1,11 +1,12 @@
 import { jwtVerify } from "jose";
 
-function getJwtSecretKey(): Uint8Array {
+function getJwtSecretKey(): Uint8Array | null {
   const secret = process.env.JWT_SECRET?.trim();
   if (!secret) {
-    throw new Error(
-      "JWT_SECRET manquant. Définissez JWT_SECRET dans .env.local (identique au backend)"
+    console.error(
+      "[admin-auth] JWT_SECRET manquant — vérifiez les variables Vercel (.env.local en local)"
     );
+    return null;
   }
   if (process.env.NODE_ENV === "production" && secret.length < 32) {
     console.warn(
@@ -17,21 +18,29 @@ function getJwtSecretKey(): Uint8Array {
 
 export const ADMIN_COOKIE = "admin_token";
 
-/** Options cookie session admin — utilisées par le proxy Next.js (same-origin). */
-export const ADMIN_COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
-  path: "/",
-  maxAge: 60 * 60 * 8,
-};
+/** Options cookie session admin — proxy Next.js same-origin uniquement. */
+export function getAdminCookieOptions() {
+  return {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 60 * 60 * 8,
+  };
+}
+
+/** @deprecated utiliser getAdminCookieOptions() */
+export const ADMIN_COOKIE_OPTIONS = getAdminCookieOptions();
 
 /** credentials obligatoire pour que le navigateur envoie/reçoive admin_token */
 export const ADMIN_FETCH_CREDENTIALS = "include" as RequestCredentials;
 
 export async function isValidAdminToken(token: string): Promise<boolean> {
+  const secretKey = getJwtSecretKey();
+  if (!secretKey) return false;
+
   try {
-    await jwtVerify(token, getJwtSecretKey(), {
+    await jwtVerify(token, secretKey, {
       algorithms: ["HS256"],
     });
     return true;

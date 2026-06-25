@@ -1,7 +1,10 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { ADMIN_COOKIE, ADMIN_COOKIE_OPTIONS } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, getAdminCookieOptions } from "@/lib/admin-auth";
 import { serverApiUrl } from "@/lib/api-base";
 import { API_UNREACHABLE_MESSAGE } from "@/lib/env";
+
+export const dynamic = "force-dynamic";
 
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 10;
@@ -117,8 +120,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("TOKEN", maskToken(data.token));
-    console.log("[admin/login proxy] cookie httpOnly", ADMIN_COOKIE, "sera défini");
+    const cookieOptions = getAdminCookieOptions();
+
+    const cookieStore = await cookies();
+    cookieStore.set("admin_token", data.token, cookieOptions);
 
     const response = NextResponse.json({
       success: true,
@@ -126,9 +131,10 @@ export async function POST(request: NextRequest) {
       admin,
     });
 
-    response.cookies.set(ADMIN_COOKIE, data.token, ADMIN_COOKIE_OPTIONS);
+    response.cookies.set(ADMIN_COOKIE, data.token, cookieOptions);
 
     const setCookieHeader = response.headers.get("set-cookie");
+    console.log("[admin/login proxy] cookie admin_token défini");
     console.log(
       "[admin/login proxy] SET-COOKIE dans réponse HTTP:",
       setCookieHeader ? "present" : "missing"

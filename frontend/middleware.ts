@@ -2,7 +2,6 @@ import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 import {
-  ADMIN_COOKIE,
   isAdminPublicPath,
   isValidAdminToken,
 } from "./lib/admin-auth";
@@ -28,11 +27,11 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin")) {
-    const token = request.cookies.get(ADMIN_COOKIE)?.value;
+    const token = request.cookies.get("admin_token")?.value;
     const cookieFound = Boolean(token);
 
     console.log("[middleware/admin] path:", pathname);
-    console.log("[middleware/admin] COOKIE FOUND:", cookieFound);
+    console.log("COOKIE ADMIN TOKEN FOUND", cookieFound);
 
     const isAuthenticated = cookieFound
       ? await isValidAdminToken(token!)

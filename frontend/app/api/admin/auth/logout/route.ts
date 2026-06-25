@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ADMIN_COOKIE, ADMIN_COOKIE_OPTIONS } from "@/lib/admin-auth";
+import { ADMIN_COOKIE, getAdminCookieOptions } from "@/lib/admin-auth";
 import { requireAdminApiToken } from "@/lib/require-admin-api";
 import { serverApiUrl } from "@/lib/api-base";
 
@@ -19,7 +19,7 @@ export async function POST() {
 
   const response = NextResponse.json({ success: true });
   response.cookies.set(ADMIN_COOKIE, "", {
-    ...ADMIN_COOKIE_OPTIONS,
+    ...getAdminCookieOptions(),
     maxAge: 0,
   });
   return response;

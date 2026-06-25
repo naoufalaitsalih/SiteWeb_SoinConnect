@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { adminFetch } from "@/lib/admin-fetch";
 import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 
 const REMEMBER_KEY = "soinsconnect_admin_email";
@@ -31,9 +30,10 @@ export default function AdminLoginForm() {
     console.log("STEP 1 - Début login");
 
     try {
-      const res = await adminFetch("/api/admin/auth/login", {
+      const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -97,10 +97,7 @@ export default function AdminLoginForm() {
 
       console.log("STEP 6 - Avant redirection");
       router.replace("/admin/dashboard");
-
-      // Navigation complète : garantit l'envoi du cookie httpOnly au middleware
-      window.location.assign("/admin/dashboard");
-
+      router.refresh();
       console.log("STEP 7 - Après redirection");
     } catch (error) {
       console.error("STEP ERROR - Exception capturée", error);
