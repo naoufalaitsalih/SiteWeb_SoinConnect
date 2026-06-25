@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { sanitizeAdminRedirect } from "@/lib/admin-auth";
+import { useRouter } from "next/navigation";
+import { saveAdminSession } from "@/lib/admin-session";
 import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 
 const REMEMBER_KEY = "soinsconnect_admin_email";
 
 export default function AdminLoginForm() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -29,8 +29,9 @@ export default function AdminLoginForm() {
     setError("");
     setLoading(true);
 
+    let succeeded = false;
+
     try {
-      // Proxy Next.js : définit le cookie httpOnly admin_token (pas d'appel direct au backend)
       const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,11 +47,6 @@ export default function AdminLoginForm() {
         statusText: res.statusText,
       });
       console.log("LOGIN DATA", data);
-      console.log(
-        "TOKEN",
-        data.token ?? "(httpOnly cookie admin_token — non exposé au client)"
-      );
-      console.log("ADMIN PROFILE", data.admin ?? data.user ?? null);
 
       if (!res.ok) {
         setError(data.message ?? "Connexion impossible");
@@ -62,10 +58,28 @@ export default function AdminLoginForm() {
         return;
       }
 
-      if (!data.tokenSet && !data.token) {
-        setError("Session non initialisée (cookie admin_token manquant)");
+      console.log("SUCCESS =", data.success);
+
+      const token = data.token;
+      const admin = data.admin ?? data.user;
+
+      if (typeof token !== "string" || token.length === 0) {
+        setError("TOKEN_MISSING_FROM_PROXY");
         return;
       }
+
+      if (!admin || typeof admin !== "object") {
+        setError("ADMIN_PROFILE_MISSING_FROM_PROXY");
+        return;
+      }
+
+      localStorage.setItem("admin_token", token);
+      console.log("TOKEN SAVED");
+
+      localStorage.setItem("admin", JSON.stringify(admin));
+      console.log("ADMIN SAVED");
+
+      saveAdminSession(token, admin);
 
       if (remember) {
         localStorage.setItem(REMEMBER_KEY, email);
@@ -73,13 +87,15 @@ export default function AdminLoginForm() {
         localStorage.removeItem(REMEMBER_KEY);
       }
 
-      const from = sanitizeAdminRedirect(searchParams.get("from"));
-      console.log("REDIRECT TO DASHBOARD", from);
-      window.location.assign(from);
+      succeeded = true;
+      console.log("REDIRECT DASHBOARD");
+      router.replace("/admin/dashboard");
     } catch {
       setError("Erreur réseau. Réessayez.");
     } finally {
-      setLoading(false);
+      if (!succeeded) {
+        setLoading(false);
+      }
     }
   }
 

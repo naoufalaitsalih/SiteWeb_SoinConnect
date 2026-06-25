@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ClipboardList, LogOut, Menu, ScrollText, ShieldCheck, X } from "lucide-react";
 import { useState } from "react";
 import AdminBrandLogo from "@/components/admin/AdminBrandLogo";
+import { clearAdminSession } from "@/lib/admin-session";
 
 const NAV_ITEMS = [
   { href: "/admin/demandes", label: "Demandes", icon: ClipboardList },
@@ -52,6 +53,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   async function handleLogout() {
     await fetch("/api/admin/auth/logout", { method: "POST", credentials: "include" });
+    clearAdminSession();
     window.location.assign("/admin/login");
   }
 
