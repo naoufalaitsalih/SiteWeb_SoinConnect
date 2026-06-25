@@ -28,11 +28,11 @@ model CareRequest {
 
 model Admin {
   id        Int       @id @default(autoincrement())
-  firstName String    @map("first_name") @db.VarChar(100)
-  lastName  String    @map("last_name") @db.VarChar(100)
-  email     String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  role      String    @db.VarChar(50)
+  firstName String?   @map("first_name")
+  lastName  String?   @map("last_name")
+  email     String    @unique
+  password  String
+  role      String    @default("super_admin")
   isActive  Boolean   @default(true) @map("is_active")
   lastLogin DateTime? @map("last_login")
   createdAt DateTime  @default(now()) @map("created_at")

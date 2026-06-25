@@ -19,7 +19,14 @@ const API_BASE = (
 async function verifyDatabase() {
   console.log("\n=== 1. Base de données ===");
   const email = normalizeAdminEmail(OFFICIAL_ADMIN.email);
-  const admin = await prisma.admin.findUnique({ where: { email } });
+  const admin = await prisma.admin.findFirst({
+    where: {
+      email: {
+        equals: email,
+        mode: "insensitive",
+      },
+    },
+  });
 
   if (!admin) {
     console.log("❌ Admin introuvable en base");
