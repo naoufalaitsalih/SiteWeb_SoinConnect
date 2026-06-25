@@ -28,6 +28,8 @@ export type AdminAuthFailureReason =
   | "database_error";
 
 const JWT_ALGORITHM = "HS256" as const;
+/** Incrémenter à chaque changement auth pour vérifier le déploiement Render */
+export const AUTH_DEBUG_VERSION = "admin-auth-debug-v3";
 
 function isDatabaseConnectionError(error: unknown): boolean {
   if (error instanceof Prisma.PrismaClientInitializationError) {
@@ -101,12 +103,12 @@ function logAuthDiagnostics(
   admin: Awaited<ReturnType<typeof findAdminByEmail>>,
   passwordMatch?: boolean
 ) {
-  console.log("EMAIL =", email);
-  console.log("ADMIN =", admin ? admin.email : "NOT FOUND");
-  console.log("ACTIVE =", admin?.isActive);
-  console.log("ROLE =", admin?.role);
+  console.log("AUTH DEBUG EMAIL:", email);
+  console.log("AUTH DEBUG ADMIN FOUND:", !!admin);
+  console.log("AUTH DEBUG ADMIN ACTIVE:", admin?.isActive);
+  console.log("AUTH DEBUG ROLE:", admin?.role);
   if (passwordMatch !== undefined) {
-    console.log("PASSWORD MATCH =", passwordMatch);
+    console.log("AUTH DEBUG PASSWORD MATCH:", passwordMatch);
   }
 }
 
@@ -130,6 +132,11 @@ async function attemptLogin(
     admin = await findAdminByEmail(email);
   } catch (error) {
     console.error("[auth/login] Erreur base de données:", error);
+    console.log("AUTH DEBUG EMAIL:", email);
+    console.log("AUTH DEBUG ADMIN FOUND:", false);
+    console.log("AUTH DEBUG ADMIN ACTIVE:", undefined);
+    console.log("AUTH DEBUG ROLE:", undefined);
+    console.log("AUTH DEBUG PASSWORD MATCH:", false);
     return { success: false, reason: "database_error" };
   }
 
@@ -184,8 +191,12 @@ export async function authenticateAdmin(input: AdminLoginInput) {
   });
 
   if (!process.env.JWT_SECRET?.trim()) {
-    console.log("EMAIL =", email);
-    console.log("ADMIN =", "NOT CHECKED (JWT_SECRET_MISSING)");
+    console.log("AUTH DEBUG EMAIL:", email);
+    console.log("AUTH DEBUG ADMIN FOUND:", false);
+    console.log("AUTH DEBUG ADMIN ACTIVE:", undefined);
+    console.log("AUTH DEBUG ROLE:", undefined);
+    console.log("AUTH DEBUG PASSWORD MATCH:", false);
+    console.log("AUTH DEBUG JWT_SECRET:", "MISSING");
     return failureResponse("jwt_error");
   }
 
@@ -211,7 +222,14 @@ export async function authenticateAdmin(input: AdminLoginInput) {
   }
 
   if (!result.success) {
-    return failureResponse(result.reason);
+    const failure = failureResponse(result.reason);
+    console.log("AUTH DEBUG RESULT:", {
+      version: AUTH_DEBUG_VERSION,
+      status: failure.status,
+      message: failure.message,
+      reason: failure.reason,
+    });
+    return failure;
   }
 
   try {

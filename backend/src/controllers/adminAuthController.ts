@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 import type { AdminRequest } from "../middleware/adminAuthMiddleware";
 import { adminLoginSchema } from "../validators/adminAuthValidator";
-import { authenticateAdmin } from "../services/adminAuthService";
+import {
+  AUTH_DEBUG_VERSION,
+  authenticateAdmin,
+} from "../services/adminAuthService";
 import { createAuditLog } from "../services/auditService";
 import { getClientIp } from "../utils/clientIp";
 
@@ -64,11 +67,16 @@ export async function postAdminLogin(req: Request, res: Response) {
   }
 
   try {
+    const email = parsed.data.email.trim().toLowerCase();
+    console.log("[admin/auth/login] AUTH DEBUG VERSION:", AUTH_DEBUG_VERSION);
+    console.log("[admin/auth/login] AUTH DEBUG EMAIL:", email);
+
     const result = await authenticateAdmin(parsed.data);
 
     if (!result.success) {
       console.warn("[admin/auth/login] refusé", {
-        email: parsed.data.email.trim().toLowerCase(),
+        version: AUTH_DEBUG_VERSION,
+        email,
         status: result.status,
         message: result.message,
         reason: result.reason,

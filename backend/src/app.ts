@@ -10,6 +10,7 @@ import adminLogsRouter from "./routes/adminLogs";
 import adminAuditRouter from "./routes/adminAudit";
 import adminDebugRouter from "./routes/adminDebug";
 import { globalApiLimiter } from "./middleware/rateLimiters";
+import { AUTH_DEBUG_VERSION } from "./services/adminAuthService";
 import { prisma } from "./prisma/client";
 const app = express();
 
@@ -46,6 +47,7 @@ app.get("/api/health", async (_req: Request, res: Response) => {
       success: true,
       message: "SoinsConnect API is running",
       database: "connected",
+      authDebugVersion: AUTH_DEBUG_VERSION,
     });
   } catch (error) {
     console.error("[health] Database check failed:", error);
