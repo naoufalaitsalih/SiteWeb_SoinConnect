@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { saveAdminSession } from "@/lib/admin-session";
 import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 
 const REMEMBER_KEY = "soinsconnect_admin_email";
@@ -28,8 +27,7 @@ export default function AdminLoginForm() {
     event.preventDefault();
     setError("");
     setLoading(true);
-
-    let succeeded = false;
+    console.log("STEP 1 - Début login");
 
     try {
       const res = await fetch("/api/admin/auth/login", {
@@ -39,26 +37,38 @@ export default function AdminLoginForm() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
-
-      console.log("LOGIN RESPONSE", {
+      console.log("STEP 2 - Réponse reçue", {
         status: res.status,
         ok: res.ok,
         statusText: res.statusText,
       });
-      console.log("LOGIN DATA", data);
+
+      const rawBody = await res.text();
+      let data: Record<string, unknown>;
+
+      try {
+        data = rawBody ? (JSON.parse(rawBody) as Record<string, unknown>) : {};
+      } catch (parseError) {
+        console.error("STEP 3 - Erreur parsing JSON", parseError, rawBody);
+        setError("Réponse serveur invalide (JSON)");
+        return;
+      }
+
+      console.log("STEP 3 - JSON reçu", data);
 
       if (!res.ok) {
-        setError(data.message ?? "Connexion impossible");
+        setError(
+          typeof data.message === "string" ? data.message : "Connexion impossible"
+        );
         return;
       }
 
       if (data.success !== true) {
-        setError(data.message ?? "Connexion impossible");
+        setError(
+          typeof data.message === "string" ? data.message : "Connexion impossible"
+        );
         return;
       }
-
-      console.log("SUCCESS =", data.success);
 
       const token = data.token;
       const admin = data.admin ?? data.user;
@@ -73,13 +83,11 @@ export default function AdminLoginForm() {
         return;
       }
 
+      console.log("STEP 4 - Sauvegarde token");
       localStorage.setItem("admin_token", token);
-      console.log("TOKEN SAVED");
 
+      console.log("STEP 5 - Sauvegarde admin");
       localStorage.setItem("admin", JSON.stringify(admin));
-      console.log("ADMIN SAVED");
-
-      saveAdminSession(token, admin);
 
       if (remember) {
         localStorage.setItem(REMEMBER_KEY, email);
@@ -87,15 +95,20 @@ export default function AdminLoginForm() {
         localStorage.removeItem(REMEMBER_KEY);
       }
 
-      succeeded = true;
-      console.log("REDIRECT DASHBOARD");
+      console.log("STEP 6 - Avant redirection");
       router.replace("/admin/dashboard");
-    } catch {
-      setError("Erreur réseau. Réessayez.");
+
+      // Navigation complète : garantit l'envoi du cookie httpOnly au middleware
+      window.location.assign("/admin/dashboard");
+
+      console.log("STEP 7 - Après redirection");
+    } catch (error) {
+      console.error("STEP ERROR - Exception capturée", error);
+      setError(
+        error instanceof Error ? error.message : "Erreur réseau. Réessayez."
+      );
     } finally {
-      if (!succeeded) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   }
 
