@@ -1,23 +1,18 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, MessageCircle } from "lucide-react";
 import CareTypeSelector from "@/components/request-form/CareTypeSelector";
 import UrgencySelector from "@/components/request-form/UrgencySelector";
-import { createCareRequest } from "@/lib/api";
 import {
-  trackFormError,
-  trackFormStart,
-  trackFormSubmit,
-  trackApiError,
-} from "@/lib/analytics";
+  GOOGLE_FORM_ERROR_MESSAGE,
+  GOOGLE_FORM_SUCCESS_MESSAGE,
+  submitCareRequestToGoogleForm,
+  WHATSAPP_FALLBACK_URL,
+} from "@/lib/googleForm";
 import { validateCareRequestForm } from "@/lib/validation";
-import {
-  ApiResponse,
-  CareRequestFormData,
-  initialFormData,
-} from "@/types/care-request";
+import { CareRequestFormData, initialFormData } from "@/types/care-request";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
@@ -27,19 +22,7 @@ export default function CareRequestFormClient() {
   const [errors, setErrors] = useState<Partial<Record<keyof CareRequestFormData, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [serverMessage, setServerMessage] = useState("");
-  const formStartedRef = useRef(false);
 
-  useEffect(() => {
-    function handleFormStart() {
-      if (formStartedRef.current) return;
-      formStartedRef.current = true;
-      trackFormStart("care_request");
-    }
-
-    const form = document.getElementById("care-request-form");
-    form?.addEventListener("focusin", handleFormStart);
-    return () => form?.removeEventListener("focusin", handleFormStart);
-  }, []);
   const validationMessages = useMemo(
     () => ({
       fullName: t("errors.fullName"),
@@ -76,9 +59,9 @@ export default function CareRequestFormClient() {
       setErrors(validation.errors);
       setStatus("error");
       setServerMessage(t("errors.formInvalid"));
-      trackFormError("care_request", { reason: "client_validation" });
       return;
     }
+
     setStatus("loading");
 
     try {
@@ -94,40 +77,15 @@ export default function CareRequestFormClient() {
         isUrgent: formData.isUrgent,
       };
 
-      const result = await createCareRequest(payload);
+      await submitCareRequestToGoogleForm(payload);
 
-      if (!result.success) {
-        setStatus("error");
-        if (result.errors?.length) {
-          const fieldErrors: Partial<Record<keyof CareRequestFormData, string>> = {};
-          result.errors.forEach((error) => {
-            const field = error.field as keyof CareRequestFormData;
-            fieldErrors[field] = error.message;
-          });
-          setErrors(fieldErrors);
-        }
-        setServerMessage(result.message ?? t("errors.generic"));
-        trackApiError("/api/requests", result.errors?.length ? 400 : 500);
-        trackFormError("care_request", {
-          reason: "server_error",
-          status: result.errors?.length ? 400 : undefined,
-        });
-        return;
-      }
-
-      trackFormSubmit("care_request");
       setStatus("success");
-      setServerMessage(result.message ?? t("errors.success"));
+      setServerMessage(GOOGLE_FORM_SUCCESS_MESSAGE);
       setFormData(initialFormData);
       setErrors({});
-    } catch (err) {
-      const apiError = err as ApiResponse;
+    } catch {
       setStatus("error");
-      setServerMessage(apiError.message ?? t("errors.generic"));
-      trackApiError("/api/requests", 500);
-      trackFormError("care_request", { reason: "server_error" });
-    } finally {
-      setStatus((current) => (current === "loading" ? "idle" : current));
+      setServerMessage(GOOGLE_FORM_ERROR_MESSAGE);
     }
   };
 
@@ -152,13 +110,23 @@ export default function CareRequestFormClient() {
           role="alert"
           className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-800"
         >
-          {serverMessage}
+          <p>{serverMessage}</p>
+          <a
+            href={WHATSAPP_FALLBACK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-700"
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp +212 708 321 872
+          </a>
         </div>
       )}
 
       <form
         id="care-request-form"
-        onSubmit={handleSubmit}        className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-xl sm:p-8"
+        onSubmit={handleSubmit}
+        className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-xl sm:p-8"
         noValidate
       >
         <div className="grid gap-6 sm:grid-cols-2">
@@ -294,7 +262,8 @@ export default function CareRequestFormClient() {
         <button
           type="submit"
           data-track="care_request_submit"
-          disabled={status === "loading"}          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={status === "loading"}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
         >
           {status === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
           {status === "loading" ? t("submitting") : t("submit")}

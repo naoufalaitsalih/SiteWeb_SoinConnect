@@ -15,9 +15,6 @@ coverage/
 .env.production
 .env*.local
 
-# Prisma generated client cache
-.prisma/
-
 # Logs & uploads
 logs/
 uploads/

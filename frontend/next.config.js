@@ -3,13 +3,6 @@ const createNextIntlPlugin = require("next-intl/plugin");
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
-const publicApiOrigin = (
-  process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://soinsconnect-api.onrender.com"
-    : "http://localhost:4000")
-).replace(/\/+$/, "");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -34,10 +27,10 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://images.unsplash.com https://images.pexels.com",
               "font-src 'self' data:",
-              `connect-src 'self' ${publicApiOrigin} https:`,
+              "connect-src 'self' https://docs.google.com https:",
               "frame-ancestors 'none'",
               "base-uri 'self'",
-              "form-action 'self'",
+              "form-action 'self' https://docs.google.com",
             ].join("; "),
           },
           {

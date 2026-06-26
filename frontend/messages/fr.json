@@ -307,52 +307,6 @@
       "homeCare": "Soins à domicile"
     }
   },
-  "admin": {
-    "metadata": {
-      "title": "Admin — Demandes | SoinsConnect",
-      "description": "Gestion des demandes de soin SoinsConnect"
-    },
-    "brand": "Admin",
-    "requests": "Demandes",
-    "backToSite": "← Retour au site",
-    "title": "Demandes de soin",
-    "subtitle": "Liste des demandes reçues via le formulaire patient.",
-    "requestCount": "{count, plural, one {# demande} other {# demandes}}",
-    "refresh": "Actualiser",
-    "loading": "Chargement...",
-    "loadingRequests": "Chargement des demandes...",
-    "errorTitle": "Erreur de chargement",
-    "errorBackend": "Impossible de contacter le serveur. Veuillez réessayer plus tard.",
-    "errorBackendHint": "Assurez-vous que le backend tourne sur le port 4000",
-    "retry": "Réessayer",
-    "emptyTitle": "Aucune demande pour le moment",
-    "emptySubtitle": "Les demandes soumises via le formulaire apparaîtront ici.",
-    "viewForm": "Voir le formulaire",
-    "table": {
-      "id": "ID",
-      "fullName": "Nom complet",
-      "phone": "Téléphone",
-      "email": "Email",
-      "address": "Adresse",
-      "careType": "Type de soin",
-      "urgency": "Urgence",
-      "status": "Statut",
-      "requestedDate": "Date souhaitée",
-      "time": "Heure",
-      "createdAt": "Créée le",
-      "noEmail": "—"
-    },
-    "status": {
-      "pending": "En attente",
-      "in_progress": "En cours",
-      "completed": "Terminé",
-      "cancelled": "Annulé"
-    },
-    "urgency": {
-      "yes": "Oui",
-      "no": "Non"
-    }
-  },
   "language": {
     "fr": "FR",
     "ar": "AR"

@@ -15,26 +15,6 @@ export type CareRequestPayload = Omit<CareRequestFormData, "email" | "descriptio
   description?: string;
 };
 
-export type CareRequest = CareRequestPayload & {
-  id: number;
-  status: "pending" | "in_progress" | "completed" | "cancelled";
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type ApiError = {
-  field: string;
-  message: string;
-};
-
-export type ApiResponse<T = unknown> = {
-  success: boolean;
-  message?: string;
-  data?: T;
-  errors?: ApiError[];
-  count?: number;
-};
-
 export const CARE_TYPE_KEYS = [
   "nursing",
   "personalCare",
@@ -46,7 +26,6 @@ export const CARE_TYPE_KEYS = [
 
 export type CareTypeKey = (typeof CARE_TYPE_KEYS)[number];
 
-/** Valeurs envoyées à l'API backend */
 export const CARE_TYPE_API_VALUES: Record<CareTypeKey, string> = {
   nursing: "Soins infirmiers",
   personalCare: "Aide à la personne",

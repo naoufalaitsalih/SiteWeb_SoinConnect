@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Contrôle manuel des serveurs
 
-L'utilisateur garde le contrôle total du lancement des serveurs frontend et backend.
+L'utilisateur garde le contrôle total du lancement du serveur frontend.
 
 ## Interdictions
 
@@ -26,10 +26,3 @@ npm run dev
 ```
 
 Puis attendre l'action de l'utilisateur. Ne pas lancer la commande soi-même.
-
-Pour le backend, indiquer séparément si besoin :
-
-```
-cd backend
-npm run dev
-```
