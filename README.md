@@ -2,14 +2,14 @@
 
 Site vitrine bilingue (FR/AR) pour un service de soins à domicile au Maroc.
 
-**Projet frontend uniquement** — les demandes de soin sont envoyées vers **Google Forms** et consultables dans **Google Sheets**. Aucun backend, base de données ou espace admin.
+**Projet frontend uniquement** — les demandes de soin passent par **WhatsApp**. Aucun backend, formulaire, base de données ou espace admin.
 
 ## Stack
 
 | Couche   | Technologie |
 |----------|-------------|
 | Frontend | Next.js 15 + TypeScript + next-intl |
-| Données  | Google Forms + Google Sheets |
+| Contact  | WhatsApp |
 | Style    | Tailwind CSS |
 
 ## Structure
@@ -19,7 +19,7 @@ Siteweb_SoinsConnect/
 ├── frontend/          # Application Next.js
 │   ├── app/           # Pages (landing FR/AR)
 │   ├── components/    # UI publique
-│   ├── lib/           # googleForm.ts, validation, i18n
+│   ├── lib/           # whatsapp.ts, i18n
 │   └── messages/      # fr.json, ar.json
 └── README.md
 ```
@@ -51,32 +51,17 @@ npm run build
 npm start
 ```
 
-## Configuration Google Form
+## Contact WhatsApp
 
-### 1. Créer le formulaire
+Le bouton **« Décrire mon besoin sur WhatsApp »** redirige vers :
 
-Créez un Google Form avec ces champs :
+`https://wa.me/212708321872`
 
-- Nom complet
-- Téléphone
-- Email (optionnel)
-- Adresse
-- Type de soin
-- Description (optionnel)
-- Date souhaitée
-- Heure souhaitée
-- Urgence (Oui/Non)
+avec un message prérempli en français ou en arabe selon la langue du site.
 
-Liez-le à une Google Sheet (Réponses → Créer une feuille de calcul).
+Numéro : **+212 708 321 872**
 
-### 2. Récupérer l'URL et les entry IDs
-
-1. Ouvrez le formulaire en prévisualisation.
-2. Affichez le code source (Ctrl+U).
-3. Cherchez `formResponse` pour l'URL d'action.
-4. Cherchez `entry.` pour chaque champ (ex. `entry.123456789`).
-
-### 3. Variables d'environnement
+## Variables d'environnement
 
 ```bash
 cp .env.example .env.local
@@ -84,18 +69,6 @@ cp .env.example .env.local
 
 ```env
 NEXT_PUBLIC_DEFAULT_LOCALE=fr
-
-NEXT_PUBLIC_GOOGLE_FORM_ACTION_URL=https://docs.google.com/forms/d/e/VOTRE_ID/formResponse
-
-NEXT_PUBLIC_GF_FULL_NAME=entry.XXXXXXXX
-NEXT_PUBLIC_GF_PHONE=entry.XXXXXXXX
-NEXT_PUBLIC_GF_EMAIL=entry.XXXXXXXX
-NEXT_PUBLIC_GF_ADDRESS=entry.XXXXXXXX
-NEXT_PUBLIC_GF_CARE_TYPE=entry.XXXXXXXX
-NEXT_PUBLIC_GF_DESCRIPTION=entry.XXXXXXXX
-NEXT_PUBLIC_GF_REQUESTED_DATE=entry.XXXXXXXX
-NEXT_PUBLIC_GF_REQUESTED_TIME=entry.XXXXXXXX
-NEXT_PUBLIC_GF_IS_URGENT=entry.XXXXXXXX
 ```
 
 ## Déploiement
@@ -106,17 +79,11 @@ NEXT_PUBLIC_GF_IS_URGENT=entry.XXXXXXXX
 2. **Root Directory** : `frontend`
 3. **Build Command** : `npm install && npm run build`
 4. **Start Command** : `npm start`
-5. Ajoutez toutes les variables `NEXT_PUBLIC_*` dans Environment.
 
 ### Vercel
 
 1. Importez le repo, dossier racine : `frontend`
 2. Framework : Next.js (détecté automatiquement)
-3. Ajoutez les variables `NEXT_PUBLIC_*` dans Settings → Environment Variables
-
-## Contact WhatsApp (fallback)
-
-En cas d'erreur d'envoi du formulaire : **+212 708 321 872**
 
 ## Internationalisation
 

@@ -201,86 +201,15 @@
   },
   "form": {
     "title": "Expliquez votre besoin de soin",
-    "subtitle": "Remplissez une demande simple et notre équipe vous aide à organiser la mise en relation avec un professionnel adapté.",
-    "fullName": "Nom complet",
-    "phone": "Téléphone",
-    "email": "Email",
-    "optional": "(optionnel)",
-    "address": "Adresse d'intervention",
-    "careType": "Type de soin",
-    "description": "Description du besoin",
-    "descriptionPlaceholder": "Décrivez brièvement votre situation, le soin recherché ou les informations importantes.",
-    "requestedDate": "Date souhaitée",
-    "requestedTime": "Heure souhaitée",
-    "urgency": "Urgence",
-    "submit": "Envoyer ma demande",
-    "submitting": "Envoi en cours...",
-    "disclaimer": "En soumettant ce formulaire, vous acceptez d'être contacté concernant votre demande de soin. Nous collectons des données techniques anonymisées pour améliorer le service et sécuriser la plateforme.",
-    "placeholders": {
-      "fullName": "Jean Dupont",
-      "phone": "06 12 34 56 78",
-      "email": "jean@email.com",
-      "address": "12 rue de la Santé, 75000 Paris"
-    },
-    "careTypes": {
-      "nursing": {
-        "title": "Soins infirmiers",
-        "description": "Pansements, injections, suivi médical à domicile"
-      },
-      "personalCare": {
-        "title": "Aide à la personne",
-        "description": "Gestes du quotidien et maintien de l'autonomie"
-      },
-      "postOp": {
-        "title": "Suivi post-opératoire",
-        "description": "Récupération après une intervention"
-      },
-      "senior": {
-        "title": "Accompagnement senior",
-        "description": "Soutien adapté aux personnes âgées"
-      },
-      "specialized": {
-        "title": "Soins spécialisés",
-        "description": "Besoins spécifiques à préciser"
-      },
-      "other": {
-        "title": "Autre besoin",
-        "description": "Décrivez votre demande ci-dessous"
-      }
-    },
-    "urgencyOptions": {
-      "normal": {
-        "title": "Demande normale",
-        "description": "Organisation selon disponibilité habituelle"
-      },
-      "urgent": {
-        "title": "Besoin urgent",
-        "description": "Situation nécessitant une attention prioritaire"
-      }
-    },
-    "sidebar": {
-      "title": "Ce qui se passe après votre demande",
-      "step1": "Votre demande est enregistrée",
-      "step2": "Nous analysons les informations transmises",
-      "step3": "Une mise en relation est organisée selon disponibilité",
-      "trust": {
-        "confidential": "Informations traitées avec confidentialité",
-        "verified": "Professionnels vérifiés",
-        "noCommitment": "Demande sans engagement immédiat"
-      }
-    },
-    "errors": {
-      "fullName": "Le nom complet est requis (min. 2 caractères)",
-      "phone": "Numéro de téléphone invalide",
-      "email": "Adresse email invalide",
-      "address": "L'adresse d'intervention est requise",
-      "careType": "Veuillez sélectionner un type de soin",
-      "requestedDate": "La date souhaitée est requise",
-      "requestedTime": "L'heure souhaitée est requise",
-      "formInvalid": "Veuillez corriger les erreurs dans le formulaire.",
-      "generic": "Une erreur est survenue. Veuillez réessayer.",
-      "success": "Votre demande a bien été enregistrée. Nous allons l'analyser et revenir vers vous."
-    }
+    "subtitle": "Contactez-nous directement sur WhatsApp et décrivez votre situation. Notre équipe vous orientera selon votre besoin.",
+    "cardTitle": "Comment ça se passe ?",
+    "step1": "Cliquez sur WhatsApp",
+    "step2": "Expliquez votre besoin",
+    "step3": "Nous vous orientons selon les disponibilités",
+    "cta": "Décrire mon besoin sur WhatsApp",
+    "imageAlt": "Professionnel de santé accompagnant un patient à domicile",
+    "badgeHomeCare": "Soins à domicile",
+    "badgeSupport": "Accompagnement humain"
   },
   "footer": {
     "description": "SoinsConnect facilite la mise en relation entre patients et professionnels de santé pour organiser des soins à domicile de manière simple, humaine et sécurisée au Maroc.",

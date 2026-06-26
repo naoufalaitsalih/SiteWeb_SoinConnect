@@ -2,6 +2,7 @@ export const siteConfig = {
   contact: {
     phone: "+212 708 321 872",
     phoneHref: "tel:+212708321872",
+    whatsappHref: "https://wa.me/212708321872",
     email: "soinsconnect.maroc@gmail.com",
     emailHref: "mailto:soinsconnect.maroc@gmail.com",
   },

@@ -27,10 +27,10 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https://images.unsplash.com https://images.pexels.com",
               "font-src 'self' data:",
-              "connect-src 'self' https://docs.google.com https:",
+              "connect-src 'self' https:",
               "frame-ancestors 'none'",
               "base-uri 'self'",
-              "form-action 'self' https://docs.google.com",
+              "form-action 'self'",
             ].join("; "),
           },
           {
