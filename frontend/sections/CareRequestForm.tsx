@@ -60,6 +60,7 @@ export default async function CareRequestForm() {
               target="_blank"
               rel="noopener noreferrer"
               data-track="whatsapp_contact_cta"
+              aria-label={t("cta")}
               className="mt-10 inline-flex w-full items-center justify-center gap-3 rounded-full bg-green-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-green-700 hover:shadow-xl sm:w-auto"
             >
               <MessageCircle className="h-5 w-5" strokeWidth={2} />

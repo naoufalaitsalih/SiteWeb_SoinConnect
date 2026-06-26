@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "SoinsConnect — Soins à domicile professionnels",
-    "description": "SoinsConnect vous accompagne avec des soins à domicile de qualité, assurés par des professionnels de santé qualifiés."
+    "title": "SoinsConnect Maroc - Soins à domicile",
+    "description": "SoinsConnect organise des soins à domicile au Maroc. Décrivez votre besoin sur WhatsApp, notre équipe vous oriente selon les disponibilités."
   },
   "header": {
     "menu": "Menu",
@@ -42,7 +42,7 @@
   "statsBar": {
     "requests": {
       "title": "Demandes centralisées",
-      "description": "Un seul formulaire pour expliquer votre besoin"
+      "description": "Un contact WhatsApp pour expliquer votre besoin"
     },
     "response": {
       "title": "Réponse rapide",
@@ -106,9 +106,9 @@
     "title": "Comment obtenir vos soins à domicile ?",
     "subtitle": "Un processus simple, rapide et organisé pour vous mettre en relation avec le professionnel adapté à votre besoin.",
     "step1": {
-      "title": "Décrivez votre besoin",
-      "description": "Remplissez le formulaire en quelques minutes :",
-      "footnote": "Le formulaire nous permet de comprendre précisément votre demande.",
+      "title": "Décrivez votre besoin sur WhatsApp",
+      "description": "Cliquez sur le bouton WhatsApp et envoyez-nous les informations essentielles.",
+      "footnote": "WhatsApp nous permet de comprendre précisément votre demande.",
       "bullets": {
         "b1": "Type de soin recherché",
         "b2": "Adresse d'intervention",
@@ -134,7 +134,7 @@
       },
       "centralized": {
         "title": "Demande centralisée",
-        "description": "Une seule demande suffit pour expliquer votre besoin."
+        "description": "Un message WhatsApp suffit pour expliquer votre besoin."
       },
       "human": {
         "title": "Accompagnement humain",
@@ -166,7 +166,7 @@
     },
     "process": {
       "title": "Processus simple et organisé",
-      "description": "Une seule demande suffit pour expliquer votre besoin et démarrer votre recherche de professionnel.",
+      "description": "Un message WhatsApp suffit pour décrire votre besoin et démarrer votre recherche de professionnel.",
       "imageAlt": "Organisation de rendez-vous de soins à domicile"
     },
     "gains": {
@@ -181,10 +181,10 @@
     "titleBefore": "Confiance &",
     "titleHighlight": "sécurité",
     "subtitle": "Vos informations et votre demande sont traitées avec sérieux, confidentialité et transparence.",
-    "analyticsNotice": "Nous collectons des données techniques anonymisées pour améliorer le service et sécuriser la plateforme.",
+    "analyticsNotice": "Votre échange via WhatsApp est traité avec sérieux et confidentialité.",
     "confidential": {
       "title": "Données confidentielles",
-      "description": "Les informations transmises via le formulaire sont utilisées uniquement pour traiter votre demande."
+      "description": "Les informations partagées sur WhatsApp sont utilisées uniquement pour traiter votre demande."
     },
     "verified": {
       "title": "Professionnels vérifiés",

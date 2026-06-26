@@ -16,10 +16,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
-    @apply bg-slate-50 text-slate-800 antialiased;
+    @apply overflow-x-hidden bg-slate-50 text-slate-800 antialiased;
   }
 }
 

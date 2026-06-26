@@ -2,8 +2,8 @@ import { getTranslations } from "next-intl/server";
 import {
   CheckCircle2,
   ChevronRight,
-  ClipboardList,
   Home,
+  MessageCircle,
   UserSearch,
 } from "lucide-react";
 import StepCard from "@/components/how-it-works/StepCard";
@@ -11,7 +11,7 @@ import StepCard from "@/components/how-it-works/StepCard";
 const stepKeys = ["step1", "step2", "step3"] as const;
 
 const stepIcons = {
-  step1: ClipboardList,
+  step1: MessageCircle,
   step2: UserSearch,
   step3: Home,
 } as const;

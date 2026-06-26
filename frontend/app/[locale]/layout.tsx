@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Inter, Noto_Sans_Arabic, Great_Vibes } from "next/font/google";
 import { routing, Locale } from "@/i18n/routing";
 import LocaleProviders from "@/components/providers/LocaleProviders";
+import { getSiteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 const inter = Inter({
@@ -39,10 +40,37 @@ export async function generateMetadata({ params }: Props) {
 
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "metadata" });
+  const siteUrl = getSiteUrl();
+  const pageUrl = `${siteUrl}/${locale}`;
 
   return {
     title: t("title"),
     description: t("description"),
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        fr: "/fr",
+        ar: "/ar",
+      },
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url: pageUrl,
+      siteName: "SoinsConnect",
+      locale: locale === "ar" ? "ar_MA" : "fr_FR",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

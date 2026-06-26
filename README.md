@@ -69,6 +69,9 @@ cp .env.example .env.local
 
 ```env
 NEXT_PUBLIC_DEFAULT_LOCALE=fr
+
+# URL publique (SEO : sitemap, OpenGraph) — ex. https://soinsconnect.ma
+NEXT_PUBLIC_SITE_URL=
 ```
 
 ## Déploiement
