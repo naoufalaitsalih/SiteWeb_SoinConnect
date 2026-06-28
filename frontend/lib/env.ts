@@ -1,10 +1,8 @@
-const LOCALES = ["fr", "ar"] as const;
-export type AppLocale = (typeof LOCALES)[number];
+import { defaultLocale, locales } from "@/i18n/routing";
 
-export const DEFAULT_LOCALE: AppLocale = LOCALES.includes(
-  process.env.NEXT_PUBLIC_DEFAULT_LOCALE?.trim() as AppLocale
-)
-  ? (process.env.NEXT_PUBLIC_DEFAULT_LOCALE!.trim() as AppLocale)
-  : "fr";
+export type AppLocale = (typeof locales)[number];
+
+/** Aligné sur i18n/routing (Edge-safe) — ne pas lire process.env ici pour le middleware. */
+export const DEFAULT_LOCALE: AppLocale = defaultLocale;
 
 export const APP_TIME_ZONE = "Africa/Casablanca";
