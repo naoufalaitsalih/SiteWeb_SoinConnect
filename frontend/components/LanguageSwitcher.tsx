@@ -20,8 +20,8 @@ export default function LanguageSwitcher() {
           locale={loc}
           className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             locale === loc
-              ? "bg-medical-600 text-white shadow-sm"
-              : "text-slate-600 hover:bg-white hover:text-medical-600"
+              ? "bg-nuria text-white shadow-sm"
+              : "text-slate-600 hover:bg-white hover:text-nuria"
           }`}
         >
           {t(loc)}

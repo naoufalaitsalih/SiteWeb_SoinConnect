@@ -42,22 +42,22 @@ export default async function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-white py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-nuria-bg via-white to-white py-20 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -start-24 top-20 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
-        <div className="absolute -end-20 bottom-10 h-64 w-64 rounded-full bg-medical-200/20 blur-3xl" />
+        <div className="absolute -start-24 top-20 h-72 w-72 rounded-full bg-nuria/15 blur-3xl" />
+        <div className="absolute -end-20 bottom-10 h-64 w-64 rounded-full bg-nuria-rose/15 blur-3xl" />
       </div>
 
       <div className="section-container relative">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex rounded-full border border-blue-200/80 bg-white/90 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-700 shadow-sm">
+          <span className="inline-flex rounded-full border border-nuria/25 bg-white/90 px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-nuria-dark shadow-sm">
             {t("badge")}
           </span>
 
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem] lg:leading-tight">
             {t("titleBefore")}{" "}
-            <span className="text-blue-600">{t("titleHighlight")}</span>
+            <span className="text-nuria">{t("titleHighlight")}</span>
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -96,7 +96,7 @@ export default async function ServicesSection() {
                   key={key}
                   className="flex items-center gap-4 transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-nuria-soft text-nuria">
                     <Icon className="h-5 w-5" strokeWidth={2} />
                   </div>
                   <p className="text-sm font-semibold leading-snug text-slate-800">

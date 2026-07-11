@@ -32,13 +32,13 @@ export default function LocaleError({ error, reset }: ErrorProps) {
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-full bg-nuria px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-nuria-dark"
           >
             {t("retry")}
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50"
+            className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-nuria/25 hover:bg-nuria-soft"
           >
             {t("home")}
           </Link>

@@ -8,6 +8,7 @@ const cardIcons = ["clock", "shield", "sparkles"] as const;
 
 export default async function HeroSection() {
   const t = await getTranslations("hero");
+  const titleLine3 = t("titleLine3");
 
   const cards = cardKeys.map((key, i) => ({
     key,
@@ -19,28 +20,30 @@ export default async function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-white pb-8 pt-16 sm:pt-20 lg:pb-12 lg:pt-24"
+      className="relative overflow-hidden bg-gradient-to-b from-nuria-bg via-white to-white pb-8 pt-16 sm:pt-20 lg:pb-12 lg:pt-24"
     >
       {/* Background blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="hero-blob absolute -start-32 top-20 h-[420px] w-[420px] rounded-full bg-blue-200/30 blur-3xl" />
-        <div className="hero-blob-slow absolute -end-24 top-1/3 h-80 w-80 rounded-full bg-medical-200/25 blur-3xl" />
-        <div className="absolute bottom-0 start-1/2 h-64 w-[600px] -translate-x-1/2 rounded-full bg-blue-100/20 blur-3xl rtl:translate-x-1/2" />
+        <div className="hero-blob absolute -start-32 top-20 h-[420px] w-[420px] rounded-full bg-nuria/20 blur-3xl" />
+        <div className="hero-blob-slow absolute -end-24 top-1/3 h-80 w-80 rounded-full bg-nuria-rose/20 blur-3xl" />
+        <div className="absolute bottom-0 start-1/2 h-64 w-[600px] -translate-x-1/2 rounded-full bg-nuria/10 blur-3xl rtl:translate-x-1/2" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20">
           {/* Left — copy */}
           <div className="max-w-xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-blue-700 shadow-sm backdrop-blur-sm transition-all duration-300 hover:shadow-md">
-              <ShieldCheck className="h-4 w-4 text-blue-600" strokeWidth={2} />
+            <span className="inline-flex items-center gap-2 rounded-full border border-nuria/25 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-nuria-dark shadow-sm backdrop-blur-sm transition-all duration-300 hover:shadow-md">
+              <ShieldCheck className="h-4 w-4 text-nuria" strokeWidth={2} />
               {t("badge")}
             </span>
 
-            <h1 className="mt-7 text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+            <h1 className="mt-7 text-4xl font-bold leading-tight tracking-tight text-nuria-ink md:text-5xl lg:text-6xl">
               <span className="block">{t("titleLine1")}</span>
-              <span className="block text-blue-600">{t("titleLine2")}</span>
-              <span className="block">{t("titleLine3")}</span>
+              <span className="block text-nuria">{t("titleLine2")}</span>
+              {titleLine3.trim() ? (
+                <span className="block">{titleLine3}</span>
+              ) : null}
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 md:text-lg">
@@ -54,7 +57,7 @@ export default async function HeroSection() {
                   className="flex items-center gap-3 text-sm font-medium text-slate-700 md:text-base"
                 >
                   <CheckCircle2
-                    className="h-5 w-5 shrink-0 text-blue-600"
+                    className="h-5 w-5 shrink-0 text-nuria"
                     strokeWidth={2}
                   />
                   {t(key)}
@@ -66,7 +69,7 @@ export default async function HeroSection() {
               <a
                 href="#request-form"
                 data-track="hero_cta_request"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-nuria px-8 py-4 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-nuria-dark hover:shadow-xl sm:w-auto"
               >
                 {t("ctaRequest")}
                 <ArrowRight className="h-4 w-4" strokeWidth={2} />
@@ -74,7 +77,7 @@ export default async function HeroSection() {
               <a
                 href="#services"
                 data-track="hero_cta_discover"
-                className="inline-flex w-full items-center justify-center rounded-full border border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-blue-200 hover:bg-blue-50/50 hover:text-blue-700 sm:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-full border border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-nuria/25 hover:bg-nuria-soft/50 hover:text-nuria-dark sm:w-auto"
               >
                 {t("ctaDiscover")}
               </a>

@@ -13,11 +13,11 @@ export default async function CareRequestForm() {
   return (
     <section
       id="request-form"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-50/90 via-blue-50/50 to-white py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-nuria-bg via-nuria-soft/50 to-white py-20 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -start-24 top-20 h-72 w-72 rounded-full bg-blue-100/40 blur-3xl" />
-        <div className="absolute -end-20 bottom-16 h-64 w-64 rounded-full bg-medical-100/25 blur-3xl" />
+        <div className="absolute -start-24 top-20 h-72 w-72 rounded-full bg-nuria-soft/40 blur-3xl" />
+        <div className="absolute -end-20 bottom-16 h-64 w-64 rounded-full bg-nuria-rose-soft blur-3xl" />
       </div>
 
       <div className="section-container relative">
@@ -45,7 +45,7 @@ export default async function CareRequestForm() {
             <ol className="mt-8 space-y-6">
               {stepKeys.map((key, index) => (
                 <li key={key} className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-sm">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-nuria text-sm font-bold text-white shadow-sm">
                     {index + 1}
                   </span>
                   <p className="pt-2 text-base leading-relaxed text-slate-700">

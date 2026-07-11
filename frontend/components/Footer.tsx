@@ -25,7 +25,7 @@ export default async function Footer() {
   const tHeader = await getTranslations("header");
 
   return (
-    <footer className="border-t border-slate-800/80 bg-[#0F172A] text-slate-300">
+    <footer className="border-t border-nuria-footer/80 bg-nuria-footer text-slate-300">
       <div className="section-container py-14 sm:py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
           {/* Column 1 — Brand */}
@@ -33,7 +33,7 @@ export default async function Footer() {
             <BrandLogo
               variant="dark"
               size="md"
-              showSubtitle
+              showTagline
               subtitle={tHeader("tagline")}
               linked={false}
             />
@@ -55,7 +55,7 @@ export default async function Footer() {
                 <li key={key}>
                   <a
                     href={href}
-                    className="text-slate-400 transition-colors duration-300 hover:text-blue-400"
+                    className="text-slate-400 transition-colors duration-300 hover:text-nuria-rose"
                   >
                     {t(`nav.${key}`)}
                   </a>
@@ -74,7 +74,7 @@ export default async function Footer() {
                 <li key={key}>
                   <a
                     href={href}
-                    className="text-slate-400 transition-colors duration-300 hover:text-blue-400"
+                    className="text-slate-400 transition-colors duration-300 hover:text-nuria-rose"
                   >
                     {t(`services.${key}`)}
                   </a>
@@ -93,10 +93,10 @@ export default async function Footer() {
                 <a
                   href={siteConfig.contact.phoneHref}
                   dir="ltr"
-                  className="group flex items-start gap-3 text-slate-400 transition-colors duration-300 hover:text-blue-400"
+                  className="group flex items-start gap-3 text-slate-400 transition-colors duration-300 hover:text-nuria-rose"
                 >
                   <Phone
-                    className="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-nuria"
                     strokeWidth={2}
                   />
                   <span>{siteConfig.contact.phone}</span>
@@ -106,10 +106,10 @@ export default async function Footer() {
                 <a
                   href={siteConfig.contact.emailHref}
                   dir="ltr"
-                  className="group flex items-start gap-3 break-all text-slate-400 transition-colors duration-300 hover:text-blue-400"
+                  className="group flex items-start gap-3 break-all text-slate-400 transition-colors duration-300 hover:text-nuria-rose"
                 >
                   <Mail
-                    className="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-nuria"
                     strokeWidth={2}
                   />
                   <span>{siteConfig.contact.email}</span>
@@ -117,14 +117,14 @@ export default async function Footer() {
               </li>
               <li className="flex items-start gap-3 text-slate-400">
                 <MapPin
-                  className="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-nuria"
                   strokeWidth={2}
                 />
                 <span>{t("area")}</span>
               </li>
               <li className="flex items-start gap-3 text-slate-400">
                 <Clock
-                  className="mt-0.5 h-4 w-4 shrink-0 text-blue-500"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-nuria"
                   strokeWidth={2}
                 />
                 <span>{t("availability")}</span>
@@ -134,14 +134,14 @@ export default async function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-center text-xs text-slate-500 sm:text-start">
             {t("copyright")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
             <a
               href={siteConfig.legal.privacyPolicy}
-              className="text-slate-500 transition-colors duration-300 hover:text-blue-400"
+              className="text-slate-500 transition-colors duration-300 hover:text-nuria-rose"
             >
               {t("privacy")}
             </a>
@@ -150,7 +150,7 @@ export default async function Footer() {
             </span>
             <a
               href={siteConfig.legal.termsOfUse}
-              className="text-slate-500 transition-colors duration-300 hover:text-blue-400"
+              className="text-slate-500 transition-colors duration-300 hover:text-nuria-rose"
             >
               {t("terms")}
             </a>

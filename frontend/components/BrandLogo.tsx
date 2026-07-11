@@ -3,23 +3,33 @@ import { brandLogoSizeConfig } from "@/components/BrandLogoMark";
 import BrandLogoLink from "@/components/BrandLogoLink";
 
 interface BrandLogoProps {
+  size?: "sm" | "md" | "lg";
   variant?: "light" | "dark";
-  size?: keyof typeof brandLogoSizeConfig;
-  linked?: boolean;
+  showTagline?: boolean;
   showSubtitle?: boolean;
   subtitle?: string;
+  linked?: boolean;
   className?: string;
 }
 
+const DEFAULT_TAGLINE = "Le soin, là où vous êtes.";
+
 export default function BrandLogo({
-  variant = "light",
   size = "md",
-  linked = true,
+  variant = "light",
+  showTagline = false,
   showSubtitle = false,
   subtitle,
+  linked = true,
   className = "",
 }: BrandLogoProps) {
-  const subtitleClass =
+  const taglineOrSubtitle = showTagline
+    ? subtitle ?? DEFAULT_TAGLINE
+    : showSubtitle
+      ? subtitle
+      : undefined;
+
+  const taglineClass =
     variant === "dark" ? "text-slate-400" : "text-slate-500";
 
   const content = (
@@ -28,13 +38,13 @@ export default function BrandLogo({
         dir="ltr"
         className={`inline-flex shrink-0 items-center ${brandLogoSizeConfig[size]}`}
       >
-        <Logo />
+        <Logo variant={variant} size={size} />
       </span>
-      {showSubtitle && subtitle && (
+      {taglineOrSubtitle && (
         <span
-          className={`mt-2.5 text-[11px] font-medium leading-snug ${subtitleClass}`}
+          className={`mt-2.5 text-[11px] font-medium leading-snug ${taglineClass}`}
         >
-          {subtitle}
+          {taglineOrSubtitle}
         </span>
       )}
     </span>

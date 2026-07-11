@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props) {
       title: t("title"),
       description: t("description"),
       url: pageUrl,
-      siteName: "SoinsConnect",
+      siteName: "NURIA",
       locale: locale === "ar" ? "ar_MA" : "fr_FR",
       type: "website",
     },

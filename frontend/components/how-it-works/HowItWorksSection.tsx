@@ -42,11 +42,11 @@ export default async function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="relative overflow-hidden bg-gradient-to-b from-white via-blue-50/40 to-white py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-nuria-soft/40 to-white py-20 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -end-24 top-16 h-72 w-72 rounded-full bg-blue-100/30 blur-3xl" />
-        <div className="absolute -start-20 bottom-20 h-64 w-64 rounded-full bg-medical-100/25 blur-3xl" />
+        <div className="absolute -end-24 top-16 h-72 w-72 rounded-full bg-nuria-soft/30 blur-3xl" />
+        <div className="absolute -start-20 bottom-20 h-64 w-64 rounded-full bg-nuria-rose-soft blur-3xl" />
       </div>
 
       <div className="section-container relative">
@@ -61,7 +61,7 @@ export default async function HowItWorksSection() {
 
         {/* Progress line — desktop */}
         <div className="relative mx-auto mt-14 hidden max-w-5xl xl:block">
-          <div className="absolute start-[16.666%] end-[16.666%] top-7 h-0.5 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200" />
+          <div className="absolute start-[16.666%] end-[16.666%] top-7 h-0.5 bg-gradient-to-r from-nuria/25 via-nuria/40 to-nuria/25" />
         </div>
 
         {/* Steps — desktop with arrows */}
@@ -88,7 +88,7 @@ export default async function HowItWorksSection() {
                   className="flex shrink-0 items-center self-center px-1"
                 >
                   <ChevronRight
-                    className="h-6 w-6 text-blue-300 rtl:rotate-180"
+                    className="h-6 w-6 text-nuria/50 rtl:rotate-180"
                     strokeWidth={2}
                     aria-hidden
                   />
@@ -128,7 +128,7 @@ export default async function HowItWorksSection() {
                 className="flex items-start gap-4 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <CheckCircle2
-                  className="mt-0.5 h-6 w-6 shrink-0 text-blue-600"
+                  className="mt-0.5 h-6 w-6 shrink-0 text-nuria"
                   strokeWidth={2}
                 />
                 <div>

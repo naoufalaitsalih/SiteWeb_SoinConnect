@@ -12,7 +12,7 @@ export default function BrandLogoLink({ children, className }: Props) {
     <Link
       href="/"
       className={className}
-      aria-label="SoinsConnect — Accueil"
+      aria-label="NURIA — Accueil"
     >
       {children}
     </Link>

@@ -38,7 +38,7 @@ export default function ServiceCard({
   const Icon = iconMap[icon];
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100/80 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-200 hover:shadow-2xl">
+    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100/80 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-nuria/25 hover:shadow-2xl">
       <div className="relative h-56 overflow-hidden sm:h-60">
         {imageError ? (
           <div className="flex h-full w-full items-center justify-center bg-slate-100">
@@ -59,7 +59,7 @@ export default function ServiceCard({
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/25 via-slate-900/5 to-transparent" />
 
-        <div className="absolute -bottom-5 start-6 z-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-xl ring-4 ring-white transition-transform duration-300 group-hover:scale-105">
+        <div className="absolute -bottom-5 start-6 z-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-nuria text-white shadow-xl ring-4 ring-white transition-transform duration-300 group-hover:scale-105">
           <Icon className="h-7 w-7" strokeWidth={1.75} />
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function ServiceCard({
         <ul className="mt-6 space-y-3 border-t border-slate-100 pt-6">
           {features.map((feature) => (
             <li key={feature} className="flex items-start gap-3 text-sm text-slate-700">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-nuria-soft text-nuria">
                 <Check className="h-3 w-3" strokeWidth={3} />
               </span>
               <span className="leading-snug">{feature}</span>

@@ -1,30 +1,30 @@
 {
   "metadata": {
-    "title": "SoinsConnect Maroc - Soins à domicile",
-    "description": "SoinsConnect organise des soins à domicile au Maroc. Décrivez votre besoin sur WhatsApp, notre équipe vous oriente selon les disponibilités."
+    "title": "NURIA – Soins à domicile au Maroc",
+    "description": "NURIA facilite la mise en relation avec des professionnels de santé pour organiser des soins à domicile de manière simple et humaine."
   },
   "header": {
     "menu": "Menu",
-    "tagline": "Soins à domicile professionnels",
+    "tagline": "Le soin, là où vous êtes.",
     "home": "Accueil",
     "services": "Nos services",
     "howItWorks": "Comment ça marche",
     "about": "À propos",
     "trust": "Confiance",
     "contact": "Contact",
-    "makeRequest": "Faire une demande"
+    "makeRequest": "Demander un soin"
   },
   "hero": {
-    "badge": "Soins à domicile professionnels",
+    "badge": "Soins à domicile, simplement",
     "titleLine1": "Des soins humains,",
-    "titleLine2": "chez vous,",
-    "titleLine3": "en toute confiance.",
-    "subtitle": "SoinsConnect vous aide à trouver rapidement un professionnel de santé qualifié pour des soins à domicile adaptés à vos besoins.",
+    "titleLine2": "là où vous êtes.",
+    "titleLine3": "",
+    "subtitle": "NURIA vous accompagne pour organiser des soins à domicile avec simplicité, écoute et confiance.",
     "feature1": "Professionnels vérifiés",
     "feature2": "Intervention selon disponibilité",
     "feature3": "Accompagnement personnalisé",
-    "ctaRequest": "Faire une demande",
-    "ctaDiscover": "Découvrir les services",
+    "ctaRequest": "Décrire mon besoin sur WhatsApp",
+    "ctaDiscover": "Découvrir nos services",
     "imageAlt": "Professionnelle de santé souriante en blouse blanche utilisant une tablette dans un cabinet médical moderne",
     "card1": {
       "title": "Intervention organisée",
@@ -127,7 +127,7 @@
       "footnote": "Vous bénéficiez d'un accompagnement personnalisé tout au long du processus."
     },
     "why": {
-      "title": "Pourquoi choisir SoinsConnect ?",
+      "title": "Pourquoi choisir NURIA ?",
       "verified": {
         "title": "Professionnels vérifiés",
         "description": "Tous les profils sont contrôlés avant leur intégration."
@@ -147,7 +147,7 @@
     }
   },
   "benefits": {
-    "title": "Pourquoi choisir SoinsConnect ?",
+    "title": "Pourquoi choisir NURIA ?",
     "subtitle": "Nous simplifions l'accès aux soins à domicile grâce à une mise en relation claire, humaine et sécurisée.",
     "comfort": {
       "title": "Restez dans le confort de votre domicile",
@@ -170,7 +170,7 @@
       "imageAlt": "Organisation de rendez-vous de soins à domicile"
     },
     "gains": {
-      "title": "Ce que vous gagnez avec SoinsConnect",
+      "title": "Ce que vous gagnez avec NURIA",
       "simplicity": "Plus de simplicité",
       "travel": "Moins de déplacements",
       "centralized": "Une demande centralisée",
@@ -212,13 +212,13 @@
     "badgeSupport": "Accompagnement humain"
   },
   "footer": {
-    "description": "SoinsConnect facilite la mise en relation entre patients et professionnels de santé pour organiser des soins à domicile de manière simple, humaine et sécurisée au Maroc.",
+    "description": "NURIA facilite l'accès aux soins à domicile grâce à une mise en relation simple, humaine et organisée.",
     "navigation": "Navigation",
     "servicesTitle": "Services",
     "contact": "Contact",
     "area": "Maroc",
     "availability": "Selon disponibilité des professionnels",
-    "copyright": "© 2026 SoinsConnect Maroc. Tous droits réservés.",
+    "copyright": "© 2026 NURIA. Tous droits réservés.",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
     "nav": {
@@ -226,7 +226,7 @@
       "services": "Nos services",
       "howItWorks": "Comment ça marche",
       "trust": "Confiance & sécurité",
-      "request": "Faire une demande"
+      "request": "WhatsApp"
     },
     "services": {
       "nursing": "Soins infirmiers",

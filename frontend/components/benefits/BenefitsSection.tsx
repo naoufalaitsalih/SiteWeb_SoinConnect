@@ -38,12 +38,12 @@ export default async function BenefitsSection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-gradient-to-b from-blue-50/80 via-white to-white py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-nuria-bg/80 via-white to-white py-20 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -start-28 top-24 h-80 w-80 rounded-full bg-blue-200/20 blur-3xl" />
-        <div className="absolute -end-24 bottom-16 h-72 w-72 rounded-full bg-medical-100/30 blur-3xl" />
-        <div className="absolute start-1/2 top-0 h-48 w-[520px] -translate-x-1/2 rounded-full bg-blue-100/20 blur-3xl rtl:translate-x-1/2" />
+        <div className="absolute -start-28 top-24 h-80 w-80 rounded-full bg-nuria/15 blur-3xl" />
+        <div className="absolute -end-24 bottom-16 h-72 w-72 rounded-full bg-nuria-rose-soft blur-3xl" />
+        <div className="absolute start-1/2 top-0 h-48 w-[520px] -translate-x-1/2 rounded-full bg-nuria/10 blur-3xl rtl:translate-x-1/2" />
       </div>
 
       <div className="section-container relative">
@@ -82,9 +82,9 @@ export default async function BenefitsSection() {
             {gainKeys.map((key) => (
               <span
                 key={key}
-                className="inline-flex items-center gap-2.5 rounded-full border border-blue-100 bg-blue-50/70 px-5 py-3 text-sm font-semibold text-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50 hover:shadow-md"
+                className="inline-flex items-center gap-2.5 rounded-full border border-nuria/15 bg-nuria-soft/70 px-5 py-3 text-sm font-semibold text-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-nuria/25 hover:bg-nuria-soft hover:shadow-md"
               >
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-600" strokeWidth={2} />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-nuria" strokeWidth={2} />
                 {t(`gains.${key}`)}
               </span>
             ))}

@@ -1,8 +1,8 @@
 export const WHATSAPP_PHONE = "212708321872";
 
 const WHATSAPP_PREFILL: Record<"fr" | "ar", string> = {
-  fr: "Bonjour SoinsConnect, je souhaite demander un soin à domicile. Voici mon besoin :",
-  ar: "مرحباً SoinsConnect، أرغب في طلب رعاية منزلية. إليك احتياجي :",
+  fr: "Bonjour NURIA, je souhaite demander un soin à domicile. Voici mon besoin :",
+  ar: "مرحباً NURIA، أرغب في طلب رعاية منزلية. إليك احتياجي :",
 };
 
 export function getWhatsAppContactUrl(locale: string): string {

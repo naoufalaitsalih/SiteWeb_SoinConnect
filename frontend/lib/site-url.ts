@@ -4,5 +4,5 @@ export function getSiteUrl(): string {
   if (fromEnv) {
     return fromEnv.replace(/\/+$/, "");
   }
-  return "https://soinsconnect.ma";
+  return "https://nuria.ma";
 }

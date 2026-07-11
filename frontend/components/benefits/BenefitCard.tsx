@@ -41,7 +41,7 @@ export default function BenefitCard({
 
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-[32px] border border-white/80 bg-white shadow-xl transition-all duration-300 hover:-translate-y-2 hover:border-blue-100 hover:shadow-2xl ${
+      className={`group flex h-full flex-col overflow-hidden rounded-[32px] border border-white/80 bg-white shadow-xl transition-all duration-300 hover:-translate-y-2 hover:border-nuria/15 hover:shadow-2xl ${
         featured ? "md:min-h-[420px]" : ""
       }`}
     >
@@ -65,7 +65,7 @@ export default function BenefitCard({
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/35 via-slate-900/10 to-transparent" />
 
-        <div className="absolute start-5 top-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg ring-4 ring-white/90 transition-transform duration-300 group-hover:scale-105">
+        <div className="absolute start-5 top-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-nuria text-white shadow-lg ring-4 ring-white/90 transition-transform duration-300 group-hover:scale-105">
           <Icon className="h-6 w-6" strokeWidth={1.75} />
         </div>
       </div>

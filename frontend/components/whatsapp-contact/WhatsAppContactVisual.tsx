@@ -22,8 +22,8 @@ export default function WhatsAppContactVisual({
 
   return (
     <div className="relative w-full">
-      <div className="pointer-events-none absolute -start-6 -top-6 h-40 w-40 rounded-full bg-blue-200/40 blur-3xl" />
-      <div className="pointer-events-none absolute -end-4 bottom-8 h-32 w-32 rounded-full bg-medical-200/30 blur-2xl" />
+      <div className="pointer-events-none absolute -start-6 -top-6 h-40 w-40 rounded-full bg-nuria/25 blur-3xl" />
+      <div className="pointer-events-none absolute -end-4 bottom-8 h-32 w-32 rounded-full bg-nuria-rose/30 blur-2xl" />
 
       <div className="relative overflow-hidden rounded-3xl border border-white/80 bg-white shadow-xl">
         <div className="relative aspect-[4/5] min-h-[320px] sm:min-h-[400px] lg:aspect-auto lg:min-h-[480px]">
@@ -38,8 +38,8 @@ export default function WhatsAppContactVisual({
               priority={false}
             />
           ) : (
-            <div className="flex h-full min-h-[320px] flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-medical-50 to-blue-50 p-10 sm:min-h-[400px] lg:min-h-[480px]">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white text-blue-600 shadow-lg">
+            <div className="flex h-full min-h-[320px] flex-col items-center justify-center bg-gradient-to-br from-nuria-soft via-nuria-rose-soft to-nuria-bg p-10 sm:min-h-[400px] lg:min-h-[480px]">
+              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white text-nuria shadow-lg">
                 <HeartPulse className="h-10 w-10" strokeWidth={1.5} />
               </div>
               <p className="mt-6 max-w-xs text-center text-sm font-medium text-slate-600">
@@ -53,11 +53,11 @@ export default function WhatsAppContactVisual({
 
         <div className="absolute bottom-5 start-5 end-5 flex flex-wrap gap-3">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-slate-800 shadow-md backdrop-blur-sm">
-            <Home className="h-4 w-4 text-blue-600" strokeWidth={2} />
+            <Home className="h-4 w-4 text-nuria" strokeWidth={2} />
             {badgeHomeCare}
           </span>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-slate-800 shadow-md backdrop-blur-sm">
-            <Stethoscope className="h-4 w-4 text-blue-600" strokeWidth={2} />
+            <Stethoscope className="h-4 w-4 text-nuria" strokeWidth={2} />
             {badgeSupport}
           </span>
         </div>

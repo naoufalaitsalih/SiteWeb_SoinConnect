@@ -40,7 +40,7 @@ export default function FooterSocialLinks() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-700/80 bg-slate-800/60 text-slate-300 transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-600/20 hover:text-blue-400"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition-all duration-300 hover:border-nuria-rose/40 hover:bg-nuria-rose/15 hover:text-nuria-rose"
         >
           <Icon className="h-[18px] w-[18px]" />
         </a>

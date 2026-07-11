@@ -47,7 +47,7 @@ export default function Header() {
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-nuria-soft bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex h-12 max-h-12 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-5">
         <BrandLogo variant="light" size="sm" className="lg:hidden" />
         <BrandLogo variant="light" size="lg" className="hidden lg:inline-flex" />
@@ -68,8 +68,8 @@ export default function Header() {
                 data-track={`nav_${link.key}`}
                 className={`whitespace-nowrap text-sm font-medium transition ${
                   isActive
-                    ? "text-medical-600 underline decoration-medical-400 decoration-2 underline-offset-[10px]"
-                    : "text-slate-700 hover:text-medical-600"
+                    ? "text-nuria underline decoration-nuria/50 decoration-2 underline-offset-[10px]"
+                    : "text-slate-700 hover:text-nuria"
                 }`}
               >
                 {t(link.key)}
@@ -95,7 +95,7 @@ export default function Header() {
 
           <button
             type="button"
-            className="inline-flex rounded-xl border border-slate-200 p-2.5 text-slate-600 transition hover:bg-slate-50 xl:hidden"
+            className="inline-flex rounded-xl border border-slate-200 p-2.5 text-slate-600 transition hover:bg-nuria-soft xl:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={t("menu")}
             aria-expanded={mobileOpen}
@@ -111,10 +111,15 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-slate-100 bg-white/95 backdrop-blur-md xl:hidden">
+        <div className="border-t border-nuria-soft bg-white/95 backdrop-blur-md xl:hidden">
           <div className="mx-auto max-w-7xl space-y-1 px-6 py-4">
-            <div className="mb-3 border-b border-slate-100 pb-3">
-              <BrandLogo variant="light" size="sm" showSubtitle subtitle={t("tagline")} />
+            <div className="mb-3 border-b border-nuria-soft pb-3">
+              <BrandLogo
+                variant="light"
+                size="sm"
+                showTagline
+                subtitle={t("tagline")}
+              />
             </div>
             <nav className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => {
@@ -129,8 +134,8 @@ export default function Header() {
                     onClick={closeMobile}
                     className={`rounded-xl px-4 py-3 text-sm font-medium transition ${
                       isActive
-                        ? "bg-medical-50 text-medical-600"
-                        : "text-slate-700 hover:bg-slate-50 hover:text-medical-600"
+                        ? "bg-nuria-soft text-nuria"
+                        : "text-slate-700 hover:bg-nuria-soft/60 hover:text-nuria"
                     }`}
                   >
                     {t(link.key)}

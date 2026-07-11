@@ -29,13 +29,13 @@ export default function HeroVisual({ cards, imageAlt }: HeroVisualProps) {
 
   return (
     <div className="relative w-full">
-      <div className="hero-blob pointer-events-none absolute -end-8 -top-10 h-56 w-56 rounded-full bg-blue-400/20 blur-3xl" />
-      <div className="hero-blob-slow pointer-events-none absolute -bottom-12 -start-6 h-48 w-48 rounded-full bg-medical-300/25 blur-3xl" />
-      <div className="pointer-events-none absolute end-1/4 top-1/3 h-32 w-32 rounded-full bg-gradient-to-br from-blue-200/40 to-medical-100/30 blur-2xl" />
+      <div className="hero-blob pointer-events-none absolute -end-8 -top-10 h-56 w-56 rounded-full bg-nuria/20 blur-3xl" />
+      <div className="hero-blob-slow pointer-events-none absolute -bottom-12 -start-6 h-48 w-48 rounded-full bg-nuria-rose/20 blur-3xl" />
+      <div className="pointer-events-none absolute end-1/4 top-1/3 h-32 w-32 rounded-full bg-gradient-to-br from-nuria/25 to-nuria-rose-soft blur-2xl" />
 
       <div className="relative mx-auto max-w-xl lg:max-w-none">
-        <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-br from-blue-100 via-medical-100 to-blue-50 opacity-90 blur-sm" />
-        <div className="absolute -inset-2 rounded-[36px] bg-gradient-to-tr from-medical-200/50 to-transparent" />
+        <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-br from-nuria-soft via-nuria-soft to-nuria-bg opacity-90 blur-sm" />
+        <div className="absolute -inset-2 rounded-[36px] bg-gradient-to-tr from-nuria-rose/30 to-transparent" />
 
         <div className="relative h-[380px] overflow-hidden rounded-[32px] shadow-2xl transition-all duration-300 sm:h-[480px] lg:h-[580px]">
           {imageError ? (
@@ -81,13 +81,13 @@ export default function HeroVisual({ cards, imageAlt }: HeroVisualProps) {
                 style={{ marginInlineStart: index % 2 === 1 ? "1.5rem" : "0" }}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-nuria-soft text-nuria">
                     <Icon className="h-5 w-5" strokeWidth={2} />
                   </div>
                   <div className="min-w-0">
                     <p className="flex items-center gap-1.5 text-sm font-bold text-slate-900">
                       <Check
-                        className="h-3.5 w-3.5 shrink-0 text-emerald-500"
+                        className="h-3.5 w-3.5 shrink-0 text-nuria"
                         strokeWidth={3}
                       />
                       {card.title}
@@ -112,13 +112,13 @@ export default function HeroVisual({ cards, imageAlt }: HeroVisualProps) {
               className="rounded-2xl border border-slate-100 bg-white p-4 shadow-xl transition-all duration-300 hover:shadow-2xl"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-nuria-soft text-nuria">
                   <Icon className="h-5 w-5" strokeWidth={2} />
                 </div>
                 <div>
                   <p className="flex items-center gap-1.5 text-sm font-bold text-slate-900">
                     <Check
-                      className="h-3.5 w-3.5 shrink-0 text-emerald-500"
+                      className="h-3.5 w-3.5 shrink-0 text-nuria"
                       strokeWidth={3}
                     />
                     {card.title}

@@ -1,4 +1,4 @@
-# SoinsConnect
+# NURIA
 
 Site vitrine bilingue (FR/AR) pour un service de soins à domicile au Maroc.
 
@@ -16,7 +16,7 @@ Site vitrine bilingue (FR/AR) pour un service de soins à domicile au Maroc.
 
 ```
 Siteweb_SoinsConnect/
-├── frontend/          # Application Next.js
+├── frontend/          # Application Next.js (nuria-frontend)
 │   ├── app/           # Pages (landing FR/AR)
 │   ├── components/    # UI publique
 │   ├── lib/           # whatsapp.ts, i18n
@@ -70,7 +70,7 @@ cp .env.example .env.local
 ```env
 NEXT_PUBLIC_DEFAULT_LOCALE=fr
 
-# URL publique (SEO : sitemap, OpenGraph) — ex. https://soinsconnect.ma
+# URL publique (SEO : sitemap, OpenGraph) — ex. https://nuria.ma
 NEXT_PUBLIC_SITE_URL=
 ```
 

@@ -9,10 +9,10 @@ import {
 const statKeys = ["requests", "response", "professionals", "followUp"] as const;
 
 const statConfig = {
-  requests: { icon: ClipboardList, color: "bg-blue-50 text-blue-600" },
-  response: { icon: Clock, color: "bg-emerald-50 text-emerald-600" },
-  professionals: { icon: ShieldCheck, color: "bg-violet-50 text-violet-600" },
-  followUp: { icon: LayoutList, color: "bg-slate-100 text-slate-600" },
+  requests: { icon: ClipboardList, color: "bg-nuria-soft text-nuria" },
+  response: { icon: Clock, color: "bg-nuria-rose-soft text-nuria-dark" },
+  professionals: { icon: ShieldCheck, color: "bg-nuria-soft text-nuria" },
+  followUp: { icon: LayoutList, color: "bg-nuria-rose-soft text-nuria-dark" },
 } as const;
 
 export default async function StatsBar() {

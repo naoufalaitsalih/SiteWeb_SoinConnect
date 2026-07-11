@@ -29,7 +29,7 @@ export default function ServiceDetailCard({
           sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
-        <div className="absolute -bottom-5 start-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-medical-600 text-white shadow-glow">
+        <div className="absolute -bottom-5 start-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-nuria text-white shadow-glow">
           {icon}
         </div>
       </div>
@@ -41,7 +41,7 @@ export default function ServiceDetailCard({
         <ul className="mt-5 space-y-2.5">
           {features.map((feature) => (
             <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-700">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-medical-100 text-medical-600">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-nuria-soft text-nuria">
                 <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
