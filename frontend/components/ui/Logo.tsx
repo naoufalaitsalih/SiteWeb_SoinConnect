@@ -1,67 +1,56 @@
+import Image from "next/image";
+
 type LogoProps = {
   variant?: "light" | "dark";
-  size?: "sm" | "md" | "lg";
+  /** Mark height in px — proportions preserved */
+  markHeight?: number;
   className?: string;
+  showWordmark?: boolean;
 };
 
-const markSize = {
-  sm: 28,
-  md: 32,
-  lg: 40,
-} as const;
-
 /**
- * Marque NURIA — texte fixe, jamais traduit, toujours LTR.
- * Identique en français, arabe et anglais.
+ * Logo officiel NURIA (image) + wordmark.
+ * Toujours LTR, jamais traduit.
  */
 export default function Logo({
   variant = "light",
-  size = "md",
+  markHeight = 44,
   className = "",
+  showWordmark = true,
 }: LogoProps) {
-  const px = markSize[size];
-  const markFill = variant === "dark" ? "#FFFFFF" : "#009493";
-  const roseFill = variant === "dark" ? "#FFB6A6" : "#FFB6A6";
+  const wordmarkColor = variant === "dark" ? "text-white" : "text-[#009493]";
+  // Source 162×176 — keep aspect ratio
+  const markWidth = Math.round((markHeight * 162) / 176);
 
   return (
     <div
       dir="ltr"
-      className={`logo ${className}`.trim()}
+      className={`logo inline-flex items-center gap-3 ${className}`.trim()}
       role="img"
       aria-label="NURIA"
     >
-      <svg
-        width={px}
-        height={px}
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden
-      >
-        {/* Two people connected — abstract N */}
-        <circle cx="11" cy="10" r="4.2" fill={markFill} />
-        <path
-          d="M7.2 16.5c0-1.2.9-2.2 2.1-2.4 1.2-.2 6.2-.2 7.4 0 1.2.2 2.1 1.2 2.1 2.4v11.2c0 1.3-1.1 2.4-2.4 2.4h-6.8c-1.3 0-2.4-1.1-2.4-2.4V16.5Z"
-          fill={markFill}
-        />
-        <circle cx="29" cy="10" r="4.2" fill={roseFill} />
-        <path
-          d="M21.2 16.5c0-1.2.9-2.2 2.1-2.4 1.2-.2 6.2-.2 7.4 0 1.2.2 2.1 1.2 2.1 2.4v11.2c0 1.3-1.1 2.4-2.4 2.4h-6.8c-1.3 0-2.4-1.1-2.4-2.4V16.5Z"
-          fill={markFill}
-        />
-        {/* Connection bridge — forms the N diagonal */}
-        <path
-          d="M16.5 18.5c3.2 2.8 6.8 5.6 10.2 8.2"
-          stroke={roseFill}
-          strokeWidth="2.4"
-          strokeLinecap="round"
-        />
-      </svg>
-      <span
-        className={`logo-nuria logo-nuria--${variant} logo-nuria--${size}`}
-      >
-        NURIA
-      </span>
+      <Image
+        src="/images/nuria-mark.png"
+        alt="NURIA"
+        width={markWidth}
+        height={markHeight}
+        className="h-auto w-auto shrink-0 object-contain"
+        style={{ height: markHeight, width: "auto" }}
+        priority
+      />
+      {showWordmark && (
+        <span
+          className={`font-sans uppercase ${wordmarkColor}`}
+          style={{
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            fontSize: Math.max(15, Math.round(markHeight * 0.42)),
+            lineHeight: 1,
+          }}
+        >
+          NURIA
+        </span>
+      )}
     </div>
   );
 }

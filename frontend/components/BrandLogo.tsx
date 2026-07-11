@@ -1,9 +1,12 @@
 import Logo from "@/components/ui/Logo";
-import { brandLogoSizeConfig } from "@/components/BrandLogoMark";
 import BrandLogoLink from "@/components/BrandLogoLink";
+import {
+  brandLogoMarkHeight,
+  type BrandLogoSize,
+} from "@/components/BrandLogoMark";
 
 interface BrandLogoProps {
-  size?: "sm" | "md" | "lg";
+  size?: BrandLogoSize;
   variant?: "light" | "dark";
   showTagline?: boolean;
   showSubtitle?: boolean;
@@ -12,7 +15,7 @@ interface BrandLogoProps {
   className?: string;
 }
 
-const DEFAULT_TAGLINE = "Le soin, là où vous êtes.";
+const DEFAULT_TAGLINE = "Des soins à domicile, simplement humains.";
 
 export default function BrandLogo({
   size = "md",
@@ -23,28 +26,25 @@ export default function BrandLogo({
   linked = true,
   className = "",
 }: BrandLogoProps) {
-  const taglineOrSubtitle = showTagline
-    ? subtitle ?? DEFAULT_TAGLINE
-    : showSubtitle
-      ? subtitle
+  const tagline =
+    showTagline || showSubtitle
+      ? subtitle ?? (showTagline ? DEFAULT_TAGLINE : undefined)
       : undefined;
 
   const taglineClass =
-    variant === "dark" ? "text-slate-400" : "text-slate-500";
+    variant === "dark" ? "text-slate-400" : "text-slate-600";
+
+  const markHeight = brandLogoMarkHeight[size];
 
   const content = (
-    <span className={`inline-flex flex-col ${className}`}>
-      <span
-        dir="ltr"
-        className={`inline-flex shrink-0 items-center ${brandLogoSizeConfig[size]}`}
-      >
-        <Logo variant={variant} size={size} />
-      </span>
-      {taglineOrSubtitle && (
+    <span className={`inline-flex flex-col items-start ${className}`}>
+      <Logo variant={variant} markHeight={markHeight} />
+      {tagline && (
         <span
-          className={`mt-2.5 text-[11px] font-medium leading-snug ${taglineClass}`}
+          dir="ltr"
+          className={`mt-2 max-w-[240px] text-[11px] font-medium leading-snug tracking-wide ${taglineClass} sm:text-xs`}
         >
-          {taglineOrSubtitle}
+          {tagline}
         </span>
       )}
     </span>

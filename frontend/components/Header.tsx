@@ -48,9 +48,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-nuria-soft bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex h-12 max-h-12 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-5">
+      <div className="mx-auto flex h-16 max-h-16 max-w-7xl items-center gap-3 px-4 sm:h-[68px] sm:max-h-[68px] sm:px-6 lg:gap-5">
         <BrandLogo variant="light" size="sm" className="lg:hidden" />
-        <BrandLogo variant="light" size="lg" className="hidden lg:inline-flex" />
+        <BrandLogo variant="light" size="md" className="hidden lg:inline-flex" />
 
         {/* Desktop navigation — centered */}
         <nav
@@ -114,12 +114,7 @@ export default function Header() {
         <div className="border-t border-nuria-soft bg-white/95 backdrop-blur-md xl:hidden">
           <div className="mx-auto max-w-7xl space-y-1 px-6 py-4">
             <div className="mb-3 border-b border-nuria-soft pb-3">
-              <BrandLogo
-                variant="light"
-                size="sm"
-                showTagline
-                subtitle={t("tagline")}
-              />
+              <BrandLogo variant="light" size="sm" showTagline />
             </div>
             <nav className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => {

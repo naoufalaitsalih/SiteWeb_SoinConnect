@@ -1,14 +1,20 @@
 import Logo from "@/components/ui/Logo";
 
 export const brandLogoSizeConfig = {
-  sm: "h-[38px] max-h-[38px]",
-  md: "h-[40px] max-h-[42px]",
-  lg: "h-12 max-h-12",
+  sm: "sm",
+  md: "md",
+  lg: "lg",
 } as const;
 
 export type BrandLogoSize = keyof typeof brandLogoSizeConfig;
 
-/** @deprecated Utiliser Logo depuis @/components/ui/Logo */
+export const brandLogoMarkHeight: Record<BrandLogoSize, number> = {
+  sm: 36,
+  md: 44,
+  lg: 56,
+};
+
+/** @deprecated Utiliser BrandLogo ou Logo */
 export default function BrandLogoMark() {
-  return <Logo />;
+  return <Logo markHeight={44} />;
 }

@@ -22,7 +22,6 @@ const serviceLinks = [
 
 export default async function Footer() {
   const t = await getTranslations("footer");
-  const tHeader = await getTranslations("header");
 
   return (
     <footer className="border-t border-nuria-footer/80 bg-nuria-footer text-slate-300">
@@ -32,9 +31,8 @@ export default async function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <BrandLogo
               variant="dark"
-              size="md"
+              size="lg"
               showTagline
-              subtitle={tHeader("tagline")}
               linked={false}
             />
             <p className="mt-5 text-sm leading-relaxed text-slate-400">
